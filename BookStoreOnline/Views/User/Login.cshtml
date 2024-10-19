@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewBag.Title = "Đăng Nhập";
+}
+
+<form style="border-radius: 5px; padding: 20px 20px; background: #fff; margin: 32px 0px; width: 500px; margin-left: 550px;" method="post">
+    <h2>Đăng Nhập</h2>
+    <div class="form-group">
+        <label for="Email">Email</label>
+        <input style="margin-left:0;" type="email" class="form-control" id="Email" name="Email" required />
+    </div>
+    <div class="form-group">
+        <label for="MatKhau">Mật Khẩu</label>
+        <input type="password" class="form-control" id="MatKhau" name="MatKhau" required />
+    </div>
+    <button style=" width: 100px; padding: 0px; margin: 0; margin-left: 171px; background-color: #C92127; border:none; color:#fff; border-radius:5px;" type="submit"  class=" btn-primary custom-btn">Đăng Nhập</button>
+    @if (ViewBag.ThongBao != null)
+    {
+        <div class="alert alert-danger mt-2">
+            @ViewBag.ThongBao
+        </div>
+    }
+</form>
+
