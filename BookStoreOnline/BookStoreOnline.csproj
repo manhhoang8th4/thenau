@@ -133,8 +133,13 @@
     <Compile Include="Areas\Admin\Controllers\OrdersAdminController.cs" />
     <Compile Include="Areas\Admin\Controllers\ProductsController.cs" />
     <Compile Include="Areas\Admin\Controllers\StatisticsController.cs" />
+    <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
+    <Compile Include="Controllers\CategoryPartialController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
+    <Compile Include="Controllers\ProductDetailController.cs" />
+    <Compile Include="Controllers\ReviewsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Core\Extension.cs" />
     <Compile Include="Global.asax.cs">
@@ -366,6 +371,17 @@
     <Content Include="Scripts\jquery-3.7.1.min.map" />
     <Content Include="Views\User\ChangePassword.cshtml" />
     <Content Include="Views\User\UpdateInfo.cshtml" />
+    <Content Include="Views\ProductDetail\Index.cshtml" />
+    <Content Include="Views\Cart\CartPartial.cshtml" />
+    <Content Include="Views\Cart\GetCartInfo.cshtml" />
+    <Content Include="Views\Cart\NullCart.cshtml" />
+    <Content Include="Views\Category\Index.cshtml" />
+    <Content Include="Views\Category\Search.cshtml" />
+    <Content Include="Views\Category\GetAllBook.cshtml" />
+    <Content Include="Views\CategoryPartial\GetPartialCategoryNav.cshtml" />
+    <Content Include="Views\CategoryPartial\GetCategorySelection.cshtml" />
+    <Content Include="Views\Reviews\Create.cshtml" />
+    <Content Include="Views\Order\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

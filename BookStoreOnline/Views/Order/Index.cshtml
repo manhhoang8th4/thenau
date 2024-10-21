@@ -1,0 +1,50 @@
+﻿@model IEnumerable<BookStoreOnline.Models.DONHANG>
+
+
+<div class="container body-page">
+    <table class="table">
+        <tr>
+            <th>
+                Tên khách hàng
+            </th>
+            <th>
+                Ngày đặt
+            </th>
+            <th>
+                Địa chỉ giao hàng
+            </th>
+            <th>
+                Trạng thái
+            </th>
+
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.KHACHHANG.Ten)
+                </td>
+
+                <td>
+                    @String.Format("{0:dd/MM/yyyy}", item.NgayDat)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.DiaChi)
+                </td>
+                @if (item.TrangThai == 0)
+                {
+                    <td style="color:red">Chưa gửi</td>
+                }
+                else
+                {
+                    <td style="color:green">Đã gửi</td>
+
+                }
+
+            </tr>
+        }
+
+    </table>
+</div>
