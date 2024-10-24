@@ -10,7 +10,7 @@ namespace BookStoreOnline.Controllers
 {
     public class CartController : Controller
     {
-        private readonly NhaSachEntities2 db = new NhaSachEntities2();
+        private readonly NhaSachEntities3 db = new NhaSachEntities3();
 
         // GET: Cart
         public ActionResult Index()

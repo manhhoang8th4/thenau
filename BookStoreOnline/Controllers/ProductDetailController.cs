@@ -7,7 +7,7 @@ namespace BookStoreOnline.Controllers
 {
     public class ProductDetailController : Controller
     {
-        NhaSachEntities2 db = new NhaSachEntities2();
+        NhaSachEntities3 db = new NhaSachEntities3();
 
         // GET: ProductDetail
         public ActionResult Index(int id)

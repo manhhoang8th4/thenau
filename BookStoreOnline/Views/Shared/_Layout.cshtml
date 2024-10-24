@@ -66,7 +66,8 @@
 
 
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-@*                                <a class="dropdown-item" href="@Url.Action("UpdateInfo", "User")">Thông Tin Cá Nhân</a>*@
+@**@                            <a class="dropdown-item" href="@Url.Action("UpdateInfo", "User")">Thông Tin Cá Nhân</a>
+                                 <a class="dropdown-item" href="@Url.Action("Index/"+user.MaKH,"Order")">Đơn Hàng Của Bạn</a>
                                 <a class="dropdown-item" href="@Url.Action("ChangePassword", "User")">Đổi Mật Khẩu</a>
                                 <a class="dropdown-item" href="@Url.Action("LogOut","User")">Đăng Xuất</a>
                             </div>
@@ -90,8 +91,9 @@
                 <div   class="col-lg-8">
                     <nav class="navbar navbar-expand-lg navbar-light">
                         <div class="collapse navbar-collapse" id="">
-                            <div style="margin-left: 49px;"  class="navbar-nav">
+                            <div style="margin-left: 49px;" class="navbar-nav">
                                 <a style="color: #000; margin-right: 40px;  height: auto; box-shadow: none; font-weight:500; " class="nav-item nav-link " href="@Url.Action("Index","Home")">Trang chủ <span class="sr-only">(current)</span></a>
+                                <a style="color: #000; margin-right: 40px; height: auto; width: auto; box-shadow: none; font-weight: 500; " class="nav-item nav-link " href="@Url.Action("GetAllBook","Category")">Tất cả sản phẩm</a>
                             </div>
                         </div>
                     </nav>

@@ -9,7 +9,7 @@ namespace BookStoreOnline.Controllers
 {
     public class CategoryPartialController : Controller
     {
-        NhaSachEntities2 db = new NhaSachEntities2();
+        NhaSachEntities3 db = new NhaSachEntities3();
         // GET: CategoryPartial
         public ActionResult GetPartialCategoryNav()
         {

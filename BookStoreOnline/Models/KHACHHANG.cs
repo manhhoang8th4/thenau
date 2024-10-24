@@ -29,6 +29,8 @@ namespace BookStoreOnline.Models
         public string DiaChi { get; set; }
         public Nullable<System.DateTime> NgayTao { get; set; }
         public bool TrangThai { get; set; }
+        public string RefreshToken { get; set; }
+        public Nullable<System.DateTime> TokenExpiration { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DANHGIA> DANHGIAs { get; set; }

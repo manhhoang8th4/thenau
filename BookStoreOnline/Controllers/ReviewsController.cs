@@ -7,7 +7,7 @@ namespace BookStoreOnline.Controllers
 {
     public class ReviewsController : Controller
     {
-        private NhaSachEntities2 db = new NhaSachEntities2();
+        private NhaSachEntities3 db = new NhaSachEntities3();
 
         // GET: Reviews/Create
         public ActionResult Create(int productId)

@@ -15,7 +15,7 @@ namespace BookStoreOnline.Areas.Admin.Controllers
 {
     public class AdminAccountsController : Controller
     {
-        private NhaSachEntities2 db = new NhaSachEntities2();
+        private NhaSachEntities3 db = new NhaSachEntities3();
 
         // GET: Admin/NHANVIENs
         public ActionResult Index()

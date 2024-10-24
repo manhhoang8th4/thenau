@@ -9,7 +9,7 @@ namespace BookStoreOnline.Controllers
 {
     public class HomeController : Controller
     {
-        NhaSachEntities2 db = new NhaSachEntities2();
+        NhaSachEntities3 db = new NhaSachEntities3();
         public ActionResult Index()
         {
             var book = db.SANPHAMs.ToList().Take(8);
