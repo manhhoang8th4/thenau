@@ -25,16 +25,22 @@
         }
     </div>
     <div class="form-group">
-        <label for="MatKhau">Mật Khẩu</label>   
+        <label for="MatKhau">Mật Khẩu</label>
         <input type="password" class="form-control" id="MatKhau" name="MatKhau" required />
+        @if (ViewBag.ThongBaoMK != null)
+        {
+            <div class="alert alert-danger mt-2">
+                @ViewBag.ThongBaoMK
+            </div>
+        }
     </div>
     <div class="form-group">
         <label for="rePass">Xác Nhận Mật Khẩu</label>
         <input type="password" class="form-control" id="rePass" name="rePass" required />
-        @if (ViewBag.ThongBao != null)
+        @if (ViewBag.ThongBaoMK != null)
         {
             <div class="alert alert-danger mt-2">
-                @ViewBag.ThongBao
+                @ViewBag.ThongBaoMK
             </div>
         }
     </div>

@@ -31,6 +31,7 @@ namespace BookStoreOnline.Models
         public bool TrangThai { get; set; }
         public string RefreshToken { get; set; }
         public Nullable<System.DateTime> TokenExpiration { get; set; }
+        public string AccessToken { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DANHGIA> DANHGIAs { get; set; }
