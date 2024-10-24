@@ -9,7 +9,7 @@ namespace BookStoreOnline.Areas.Admin.Controllers
 {
     public class DiscountController : Controller
     {
-        private NhaSachEntities2 db = new NhaSachEntities2();
+        private NhaSachEntities3 db = new NhaSachEntities3();
 
         // GET: KhuyenMai
         public ActionResult Index()

@@ -9,7 +9,7 @@ namespace BookStoreOnline.Controllers
 {
     public class CategoryController : Controller
     {
-        NhaSachEntities2 db = new NhaSachEntities2();
+        NhaSachEntities3 db = new NhaSachEntities3();
 
         // GET: Category
         public ActionResult Index(int id)

@@ -8,7 +8,7 @@ namespace BookStoreOnline.Models
 {
     public class CartItem
     {
-        NhaSachEntities2 db = new NhaSachEntities2();
+        NhaSachEntities3 db = new NhaSachEntities3();
         public int ProductID { get; set; }
         public string NamePro { get; set; }
         public string ImagePro { get; set; }

@@ -9,7 +9,7 @@ namespace BookStoreOnline.Areas.Admin.Controllers
 {
     public class AdminReviewController : Controller
     {
-        NhaSachEntities2 db = new NhaSachEntities2();
+        NhaSachEntities3 db = new NhaSachEntities3();
 
         // GET: AdminReview
         public ActionResult Index()

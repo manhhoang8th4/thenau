@@ -13,10 +13,10 @@ namespace BookStoreOnline.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class NhaSachEntities2 : DbContext
+    public partial class NhaSachEntities3 : DbContext
     {
-        public NhaSachEntities2()
-            : base("name=NhaSachEntities2")
+        public NhaSachEntities3()
+            : base("name=NhaSachEntities3")
         {
         }
     
