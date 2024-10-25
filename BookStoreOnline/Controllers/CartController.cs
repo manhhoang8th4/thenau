@@ -13,7 +13,7 @@ namespace BookStoreOnline.Controllers
         private readonly NhaSachEntities3 db = new NhaSachEntities3();
 
         // GET: Cart
-        public ActionResult Index()
+        public ActionResult Index() 
         {
             return View();
         }
@@ -23,8 +23,9 @@ namespace BookStoreOnline.Controllers
         {
             if (Session["GioHang"] is List<CartItem> cart)
             {
-                return cart;
+                return cart;  
             }
+
 
             cart = new List<CartItem>();
             Session["GioHang"] = cart;
@@ -249,7 +250,8 @@ namespace BookStoreOnline.Controllers
             }
 
             var customer = Session["TaiKhoan"] as KHACHHANG;
-            if (customer == null)
+            if (customer == null)  
+            
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Not logged in.");
             }

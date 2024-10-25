@@ -1,19 +1,19 @@
-﻿@model BookStoreOnline.Models.SANPHAM
+﻿@model BookStoreOnline.Models.SANPHAM 
 
 @{
-    var price = System.Globalization.CultureInfo.GetCultureInfo("vi-VN");
-    var user = ViewBag.User as BookStoreOnline.Models.KHACHHANG;
+    var price = System.Globalization.CultureInfo.GetCultureInfo("vi-VN"); 
+    var user = ViewBag.User as BookStoreOnline.Models.KHACHHANG; 
 }
 
-<div style="padding-top:50px;" class="container body-page">
-    <!-- Thông tin sản phẩm -->
-    <div class="row">
-        <div class="col-lg-5">
-            <img src="~/Images/@Model.Anh" style="width:100%" alt="@Model.TenSanPham">
+<div style="padding-top:50px;" class="container body-page"> 
+    <!-- Thông tin sản phẩm --> 
+    <div class="row"> 
+        <div class="col-lg-5"> 
+            <img src="~/Images/@Model.Anh" style="width:100%" alt="@Model.TenSanPham"> 
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-4"> 
             <h3>@Model.TenSanPham</h3>
-            <h3 style="color:darkred;">@String.Format(price, "{0:c0}", Model.Gia)</h3>
+            <h3 style="color:darkred;">@String.Format(price, "{0:c0}", Model.Gia)</h3> 
             <p>Tác giả: @Model.TacGia</p>
             <p>Mô tả: @Model.MoTa</p>
 
@@ -22,28 +22,28 @@
             {
                 <div class="form-add-to-cart">
                     <input type="number" style="width:60px" value="1" min="1">
-                    <button onclick="location.href='@Url.Action("Login", "User")'"><i class="bi bi-bag-plus"></i> Thêm vào giỏ hàng</button>
+                    <button onclick="location.href='@Url.Action("Login", "User")'"><i class="bi bi-bag-plus"></i> Thêm vào giỏ hàng</button> 
                 </div>
             }
             else
             {
-                using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post, new { @class = "form-add-to-cart" }))
+                using (Html.BeginForm("AddToCart", "Cart", FormMethod.Post, new { @class = "form-add-to-cart" })) 
                 {
-                    <input type="number" name="Quantity" style="width:60px" value="1" min="1">
-                    <input type="hidden" name="ProductID" value="@Model.MaSanPham" />
+                    <input type="number" name="Quantity" style="width:60px" value="1" min="1"> 
+                    <input type="hidden" name="ProductID" value="@Model.MaSanPham" /> 
                     <button style="background-color: #c92127; color: white; border-radius:5px" type="submit"><i class="bi bi-bag-plus"></i> Thêm vào giỏ hàng</button>
                 }
             }
-        </div>
-    </div>
-    <hr />
+        </div>  
+    </div> 
+    <hr /> 
 
     <!-- Phần đánh giá -->
     <div class="product-reviews">
         <h3>Đánh giá sản phẩm</h3>
-        @if (Model.DANHGIAs.Any())
+        @if (Model.DANHGIA.Any())
         {
-            foreach (var review in Model.DANHGIAs)
+            foreach (var review in Model.DANHGIA)
             {
                 <div class="review">
                     <p><strong>@review.KHACHHANG.Ten</strong> - <span>@review.NgayTao.ToString("dd/MM/yyyy HH:mm")</span></p>
@@ -141,7 +141,7 @@
     /* Phần CSS cho đánh giá sao */
     .rating-stars {
         display: flex;
-     /*   direction: row;*/
+        direction: row;
         font-size: 24px;
         cursor: pointer;
     }
