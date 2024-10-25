@@ -251,7 +251,7 @@ namespace BookStoreOnline.Controllers
 
             var customer = Session["TaiKhoan"] as KHACHHANG;
             if (customer == null)  
-            
+
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Not logged in.");
             }
@@ -282,6 +282,7 @@ namespace BookStoreOnline.Controllers
                         var product = db.SANPHAMs.Find(item.ProductID);
                         if (product == null)
                         {
+                            
                             return HttpNotFound("Product not found.");
                         }
 

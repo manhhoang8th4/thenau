@@ -10,9 +10,10 @@ namespace BookStoreOnline.Controllers
          NhaSachEntities3 db = new NhaSachEntities3(); 
 
         // GET: ProductDetail
-        
+
         public ActionResult Index(int id)
-        {
+        { 
+            
             var product = db.SANPHAMs.FirstOrDefault(p => p.MaSanPham == id); 
             if (product == null)
             { 
