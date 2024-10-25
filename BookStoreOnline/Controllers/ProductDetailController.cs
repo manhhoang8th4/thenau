@@ -5,36 +5,38 @@ using BookStoreOnline.Models;
 
 namespace BookStoreOnline.Controllers
 {
-    public class ProductDetailController : Controller
+     public class ProductDetailController : Controller 
     {
-        NhaSachEntities3 db = new NhaSachEntities3();
+         NhaSachEntities3 db = new NhaSachEntities3(); 
 
         // GET: ProductDetail
+
         public ActionResult Index(int id)
-        {
-            var product = db.SANPHAMs.FirstOrDefault(p => p.MaSanPham == id);
+        { 
+            
+            var product = db.SANPHAMs.FirstOrDefault(p => p.MaSanPham == id); 
             if (product == null)
-            {
+            { 
                 return HttpNotFound();
             }
-
-            var moreBooks = db.SANPHAMs.Where(p => p.MaSanPham != id).Take(3).ToList();
-            var user = Session["TaiKhoan"] as KHACHHANG;
+ 
+            var moreBooks = db.SANPHAMs.Where(p => p.MaSanPham != id).Take(3).ToList(); 
+            var user = Session["TaiKhoan"] as KHACHHANG; 
 
             ViewBag.Book = product;
             ViewBag.MoreBook = moreBooks;
             ViewBag.User = user;
-
+ 
             return View(product); // Pass the product model to the view
         }
 
         [HttpPost]
-        public ActionResult AddReview(int ProductID, string NoiDung, int SoSao)
+        public ActionResult AddReview(int ProductID, string NoiDung, int SoSao) 
         {
             var user = Session["TaiKhoan"] as KHACHHANG;
-            if (user == null)
+            if (user == null) 
             {
-                return RedirectToAction("Login", "User");
+                return RedirectToAction("Login", "User"); 
             }
 
             var review = new DANHGIA
