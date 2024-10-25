@@ -78,6 +78,7 @@ public class UserController : Controller
             {
                 cus.TrangThai = true;
                 cus.NgayTao = DateTime.Now;
+                //Nguyễn Phúc Gia Huy
 
                 cus.MatKhau = HashPassword(cus.MatKhau);
 
