@@ -185,47 +185,45 @@
             var averageRating = reviews.Any() ? reviews.Average(r => r.SoSao) : 0;
             var roundedRating = Math.Round(averageRating, 1); // Làm tròn đến 1 chữ số thập phân
 
-            <div class="col-lg-3 prod-item">
-                <div class="card" style="width: 18rem;">
-                    <a href="@Url.Action("Index", "ProductDetail", new { id = item.MaSanPham })">
-                        <img class="card-img-top" src="~/Images/@item.Anh" alt="Ảnh sản phẩm">
-                    </a>
-                    <div style="height:250px" class="card-body">
-                        <a href="@Url.Action("Index", "ProductDetail", new { id = item.MaSanPham })" class="title-prod">
-                            <h5 class="card-title">
-                                @Html.Raw(GetShortTitle(item.TenSanPham))
-                            </h5>
-                        </a>
-                        <h5 style="color: darkred;">@String.Format(price, "{0:c0}", item.Gia)</h5>
-                        <p class="card-text rating-card">
-                            <!-- Hiển thị số lượng đánh giá và sao đánh giá -->
-                            <span style="color: black;">(@item.DANHGIAs.Count() đánh giá, @roundedRating sao)</span>
-                            <div class="rating-stars">
-                                @for (int i = 1; i <= 5; i++)
-                                {
-                                    <i class="fas fa-star @(i <= roundedRating ? "filled" : "")"></i>
-                                }
-                            </div>
-                        </p>
+          <div class="col-lg-3 prod-item">
+              <div class="card" style="width: 18rem;">
+                  <a href="@Url.Action("Index", "ProductDetail", new { id = item.MaSanPham })">
+                      <img class="card-img-top" src="~/Images/@item.Anh" alt="Ảnh sản phẩm">
+                      @if (item.SoLuong == 0)
+                      {
+                          <div class="out-of-stock">Đã hết hàng</div>
+                      }
+                  </a>
+                  <div style="height:250px" class="card-body">
+                      <a href="@Url.Action("Index", "ProductDetail", new { id = item.MaSanPham })" class="title-prod">
+                          <h5 class="card-title">
+                              @Html.Raw(GetShortTitle(item.TenSanPham))
+                          </h5>
+                      </a>
+                      <h5 style="color: darkred;">@String.Format(price, "{0:c0}", item.Gia)</h5>
+                      <p class="card-text rating-card">
+                          <span style="color: black;">(@item.DANHGIAs.Count() đánh giá, @roundedRating sao)</span>
+                          <div class="rating-stars">
+                              @for (int i = 1; i <= 5; i++)
+                              {
+                                  <i class="fas fa-star @(i <= roundedRating ? "filled" : "")"></i>
+                              }
+                          </div>
+                      </p>
 
-                        <!-- Hiển thị số lượng đã bán với thanh tiến độ -->
-                        <!--<div class="progress-bar-container">
-                            <div class="progress-bar" style="width: @roundedPercentageSold%; background-color: @progressBarColor; border-radius: 30px;"></div>
-                            <div class="sold-text">Đã bán @soldQuantity/@totalQuantity</div>
-                        </div>-->
-
-                        @if (user != null)
-                        {
-                            <a href="@Url.Action("AddSingleProduct", "Cart", new { id = item.MaSanPham })" style="background-color: #c92127; text-align: center; margin: 30px auto; display: flex; align-items: center; justify-content: center; color: #fff; border: 2px solid #C92127; font-size: 18px; font-weight: 700; width: 210px; height: 40px; border-radius: 8px; cursor: pointer; transition: all 0.5s;">Mua</a>
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("Login", "User")" style="background-color: #c92127; text-align: center; margin: 30px auto; display: flex; align-items: center; justify-content: center; color: #fff; border: 2px solid #C92127; font-size: 18px; font-weight: 700; width: 210px; height: 40px; border-radius: 8px; cursor: pointer; transition: all 0.5s;">Mua</a>
-                        }
-                    </div>
-                </div>
-            </div>
+                      @if (user != null)
+                      {
+                          <a href="@Url.Action("AddSingleProduct", "Cart", new { id = item.MaSanPham })" class="buy-button" style="background-color: #c92127; text-align: center; margin: 30px auto; display: flex; align-items: center; justify-content: center; color: #fff; border: 2px solid #C92127; font-size: 18px; font-weight: 700; width: 210px; height: 40px; border-radius: 8px; cursor: pointer; transition: all 0.5s;">Mua</a>
+                      }
+                      else
+                      {
+                          <a href="@Url.Action("Login", "User")" class="buy-button" style="background-color: #c92127; text-align: center; margin: 30px auto; display: flex; align-items: center; justify-content: center; color: #fff; border: 2px solid #C92127; font-size: 18px; font-weight: 700; width: 210px; height: 40px; border-radius: 8px; cursor: pointer; transition: all 0.5s;">Mua</a>
+                      }
+                  </div>
+              </div>
+          </div>
         }
+
     </div>
     <div class="row-more custom-btn" style="justify-content: center; margin: 30px auto; display: flex; align-items: center; justify-content: center; color: #C92127; background-color: #fff; border: 2px solid #C92127; font-size: 14px; font-weight: 700; width: 210px; height: 40px; border-radius: 8px; cursor: pointer; transition: all 0.5s;">
         <a href="@Url.Action("GetAllBook", "Category")" class="see-more">
@@ -259,6 +257,23 @@
             .rating-stars .fa-star.filled {
                 color: #FFD700; /* Màu vàng cho sao đã được đánh giá */
             }
+    .out-of-stock {
+        position: absolute; /* Để nó nằm trên ảnh */
+        top: 40px; /* Dời xuống dưới thêm một chút */
+        left: 130px; /* Dời sang bên phải */
+        color: red; /* Chữ màu đỏ */
+        font-size: 20px; /* Kích thước chữ */
+        font-weight: bold; /* Chữ đậm */
+        padding: 5px; /* Khoảng cách xung quanh chữ */
+        transform: rotate(40deg); /* Nghiêng 45 độ */
+        z-index: 10; /* Đảm bảo nó nằm trên cùng */
+    }
+    .buy-button {
+        opacity: 1; /* Mặc định là không mờ */
+    }
 
-    sadsdsd
+    .card:has(.out-of-stock) .buy-button {
+        opacity: 0.5; /* Làm mờ nút Mua khi hết hàng */
+        pointer-events: none; /* Không cho phép click khi hết hàng */
+    }
 </style>
