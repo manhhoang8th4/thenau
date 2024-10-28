@@ -387,6 +387,8 @@
     <Content Include="Models\Entities.edmx.diagram">
       <DependentUpon>Entities.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\manhhoang8t4-001-site1 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\manhhoang8t4-001-site1 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <None Include="Scripts\jquery-3.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.7.1.js" />
