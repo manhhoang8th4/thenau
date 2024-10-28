@@ -15,6 +15,7 @@
             <h3>@Model.TenSanPham</h3>
             <h3 style="color:darkred;">@String.Format(price, "{0:c0}", Model.Gia)</h3>
             <p>Tác giả: @Model.TacGia</p>
+            <p>Thể loại: @Model.LOAI.Tenloai</p>
             <p>Mô tả: @Model.MoTa</p>
 
             <!-- Thêm vào giỏ hàng -->
@@ -41,7 +42,7 @@
                     <div class="form-add-to-cart">
                         <input type="number" style="width:60px" value="1" min="1" readonly>
                         <button style="opacity: 0.5;" disabled><i class="bi bi-bag-plus"></i> Thêm vào giỏ hàng</button>
-                       @* <p style="color: red;">Sản phẩm này hiện đã hết hàng.</p>*@
+                        @* <p style="color: red;">Sản phẩm này hiện đã hết hàng.</p>*@
                     </div>
                 }
             }
