@@ -1,50 +1,230 @@
 ﻿@model IEnumerable<BookStoreOnline.Models.DONHANG>
-
+@using BookStoreOnline.Areas.Admin.Constants
 
 <div class="container body-page">
-    <table class="table">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+<table class="table">
+    <thead>
         <tr>
-            <th>
-                Tên khách hàng
-            </th>
-            <th>
-                Ngày đặt
-            </th>
-            <th>
-                Địa chỉ giao hàng
-            </th>
-            <th>
-                Trạng thái
-            </th>
-
+            <th>Tên khách hàng</th>
+            <th>Ngày đặt</th>
+            <th>Địa chỉ giao hàng</th>
+            <th>Trạng thái</th>
         </tr>
-
-        @foreach (var item in Model)
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.KHACHHANG.Ten)</td>
+                    <td>@String.Format("{0:dd/MM/yyyy}", item.NgayDat)</td>
+                    <td>@Html.DisplayFor(modelItem => item.DiaChi)</td>
+                    <td>
+                        @switch (item.TrangThai)
+                        {
+                            case (int)Constants.StatusOrder.NoInform:
+                                <span style="color:red">Chưa xác nhận</span>;
+                                break;
+                            case (int)Constants.StatusOrder.Informed:
+                                <span style="color:blue">Đã xác nhận</span>;
+                                break;
+                            case (int)Constants.StatusOrder.Shipping:
+                                <span style="color:orange">Đang giao hàng</span>;
+                                break;
+                            case (int)Constants.StatusOrder.Received:
+                                <span style="color:green">Đã nhận hàng</span>;
+                                break;
+                            case (int)Constants.StatusOrder.Canceled:
+                                <span style="color:black">Đã hủy</span>;
+                                break;
+                            default:
+                                <span>Không rõ trạng thái</span>;
+                                break;
+                        }
+                    </td>
+                    <td>
+                        @if (item.TrangThai == (int)Constants.StatusOrder.NoInform)
+                        {
+                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#cancelOrderModal" data-orderid="@item.MaDonHang">
+                                Hủy
+                            </button>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+        else
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.KHACHHANG.Ten)
-                </td>
-
-                <td>
-                    @String.Format("{0:dd/MM/yyyy}", item.NgayDat)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.DiaChi)
-                </td>
-                @if (item.TrangThai == 0)
-                {
-                    <td style="color:red">Chưa gửi</td>
-                }
-                else
-                {
-                    <td style="color:green">Đã gửi</td>
-
-                }
-
+                <td colspan="5">Không có đơn hàng nào để hiển thị.</td>
             </tr>
         }
+    </tbody>
 
-    </table>
+</table>
 </div>
+<!-- Modal để xác nhận hủy đơn hàng -->
+<div class="modal fade" id="cancelOrderModal" tabindex="-1" role="dialog" aria-labelledby="cancelOrderModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h5 class="modal-title" id="cancelOrderModalLabel">Xác nhận hủy đơn hàng</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <form id="cancelOrderForm" method="post" action="@Url.Action("Delete", "Order")">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="orderId" name="id" />
+                    <div class="form-group">
+                        <label for="reason">Chọn lý do hủy:</label>
+                        <select class="form-control" id="reason" name="reason">
+                            <option value="1">Không cần sản phẩm nữa</option>
+                            <option value="2">Bị vợ lấy tiền</option>
+                            <option value="3">Đặt nhầm</option>
+                            <option value="4">Có thằng chó bá</option>
+                            <option value="4">Khác</option>
+                        </select>
+                    </div>
+                    <p>Bạn có chắc chắn muốn hủy đơn hàng này không?</p>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="danger" id="confirmCancel" style="margin-left: 10px;">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Thêm jQuery và Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#cancelOrderModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var orderId = button.data('orderid');
+
+            var modal = $(this);
+            modal.find('#orderId').val(orderId);
+        });
+
+        $('#confirmCancel').click(function () {
+            $('#cancelOrderForm').submit();
+        });
+    });
+</script>
+<style>
+    /* Modal dialog styling */
+    .modal-dialog {
+        max-width: 500px; /* Adjust width to be more compact */
+        margin: 1.75rem auto;
+    }
+
+    /* Modal content styling */
+    .modal-content {
+        border-radius: 8px;
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow */
+        background-color: #f9f9f9; /* Soft background color */
+    }
+
+    /* Modal header styling */
+    .modal-header {
+        background-color: #C92127;
+        color: white;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        padding: 15px;
+        text-align: center;
+    }
+
+    .modal-title {
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+
+    .close {
+        color: white;
+        opacity: 0.8;
+    }
+
+        .close:hover {
+            opacity: 1;
+        }
+
+    /* Modal body styling */
+    .modal-body {
+        padding: 20px;
+    }
+
+    /* Form styling */
+    .form-group label {
+        font-weight: bold;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        border: 0px solid #ddd;
+        padding: 8px;
+    }
+
+    /* Modal footer styling */
+    .modal-footer {
+        padding: 15px;
+        background-color: #f1f1f1;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        justify-content: center;
+    }
+
+    /* Button styling */
+    button.secondary {
+        background-color: #6c757d;
+        color: white;
+        padding: 8px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        button.secondary:hover {
+            background-color: #5a6268;
+        }
+
+    button.danger {
+        background-color: #dc3545;
+        color: white;
+        padding: 8px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        button.danger:hover {
+            background-color: #c82333;
+        }
+
+</style>
