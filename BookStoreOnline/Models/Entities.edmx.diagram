@@ -4,15 +4,15 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="a6ede8963f2f4da3aadba822a0629f6d" Name="Diagram1">
+      <Diagram DiagramId="5eaf2f51193c42c8a808180123852d19" Name="Diagram1">
         <EntityTypeShape EntityType="NhaSachModel.CHITIETDONHANG" Width="1.5" PointX="8.25" PointY="5.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="NhaSachModel.DANHGIA" Width="1.5" PointX="11.25" PointY="5.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="NhaSachModel.DONHANG" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="NhaSachModel.DANHGIA" Width="1.5" PointX="11.25" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="NhaSachModel.DONHANG" Width="1.5" PointX="3" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NhaSachModel.KHACHHANG" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="NhaSachModel.KHUYENMAI" Width="1.5" PointX="0.75" PointY="9" IsExpanded="true" />
-        <EntityTypeShape EntityType="NhaSachModel.LOAI" Width="1.5" PointX="3.75" PointY="1.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="NhaSachModel.NHANVIEN" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
-        <EntityTypeShape EntityType="NhaSachModel.SANPHAM" Width="1.5" PointX="6" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="NhaSachModel.LOAI" Width="1.5" PointX="3.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="NhaSachModel.NHANVIEN" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="NhaSachModel.SANPHAM" Width="1.5" PointX="6" PointY="4.625" IsExpanded="true" />
         <AssociationConnector Association="NhaSachModel.FK_Chitietdonhang_Donhang" ManuallyRouted="false" />
         <AssociationConnector Association="NhaSachModel.FK_Chitietdonhang_Sanpham" ManuallyRouted="false" />
         <AssociationConnector Association="NhaSachModel.FK_DANHGIA_KHACHHANG" ManuallyRouted="false" />

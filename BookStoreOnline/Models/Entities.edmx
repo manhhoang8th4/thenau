@@ -54,6 +54,7 @@
           <Property Name="TrangThai" Type="bit" />
           <Property Name="RefreshToken" Type="nvarchar" MaxLength="500" />
           <Property Name="TokenExpiration" Type="datetime" />
+          <Property Name="AccessToken" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="KHUYENMAI">
           <Key>
@@ -307,6 +308,7 @@ warning 6035: The relationship 'FK_DONHANG_KHUYENMAI' has columns that are not p
           <Property Name="TrangThai" Type="Boolean" />
           <Property Name="RefreshToken" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="TokenExpiration" Type="DateTime" Precision="3" />
+          <Property Name="AccessToken" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="DANHGIAs" Relationship="Self.FK_DANHGIA_KHACHHANG" FromRole="KHACHHANG" ToRole="DANHGIA" />
           <NavigationProperty Name="DONHANGs" Relationship="Self.FK_Donhang_Khachhang" FromRole="KHACHHANG" ToRole="DONHANG" />
         </EntityType>
@@ -562,6 +564,7 @@ warning 6035: The relationship 'FK_DONHANG_KHUYENMAI' has columns that are not p
                 <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
                 <ScalarProperty Name="RefreshToken" ColumnName="RefreshToken" />
                 <ScalarProperty Name="TokenExpiration" ColumnName="TokenExpiration" />
+                <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

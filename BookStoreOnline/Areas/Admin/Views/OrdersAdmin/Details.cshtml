@@ -69,7 +69,9 @@
                                         {
                                             <a href="@Url.Action("ShippingSuccess/"+ Model.MaDonHang,"OrdersAdmin")" class="btn btn-success">Xác nhận giao thành công</a>
                                         }
-                                        @if (Model.TrangThai != (int)Constants.StatusOrder.Canceled && Model.TrangThai != (int)Constants.StatusOrder.Received)
+                                        @if (Model.TrangThai != (int)Constants.StatusOrder.Canceled
+                                                && Model.TrangThai != (int)Constants.StatusOrder.Received
+                                                && Model.TrangThai != (int)Constants.StatusOrder.Shipping)
                                         {
                                             <a href="@Url.Action("CancelOrder/"+ Model.MaDonHang,"OrdersAdmin")" class="btn btn-danger">Hủy đơn hàng</a>
                                         }

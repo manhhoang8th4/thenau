@@ -69,18 +69,20 @@
 
             </div>
             <div class="col-lg-6">
-                @* <h5 class="discount-code-title">Mã khuyến mãi</h5>
-                    <input style="color: #000; padding: 10px 5px; border-radius: 5px; background-color: white; border: 1px solid #ccc;" type="text" name="discountCode" placeholder="Nhập mã khuyến mãi" />
 
-                    <div style=" margin-top: 10px; border: 1px solid #ccc; justify-content: space-between; display: flex; padding: 10px;" class="discount-details">
-                        <h5>Giảm giá</h5>
-                        <p id="discount-amount">0 đ</p>
-                    </div>*@
+                @* <h5 class="discount-code-title">Mã khuyến mãi</h5>
+        <input style="color: #000; padding: 10px 5px; border-radius: 5px; background-color: white; border: 1px solid #ccc;" type="text" name="discountCode" placeholder="Nhập mã khuyến mãi" />
+
+        <div style=" margin-top: 10px; border: 1px solid #ccc; justify-content: space-between; display: flex; padding: 10px;" class="discount-details">
+            <h5>Giảm giá</h5>
+            <p id="discount-amount">0 đ</p>
+        </div>*@
                 <table class="table">
                     <tr>
-                        <td>Số lượng sản phẩm</td>
-                        <td>@ViewBag.TotalNumber</td>
+                        <td>Tổng số lượng sản phẩm</td>
+                        <td id="total-quantity">@ViewBag.TotalNumber</td>
                     </tr>
+
                     <tr>
                         <td>Tổng giá</td>
                         <td><h4 id="total-price">@String.Format(price, "{0:c0}", ViewBag.TotalPrice)</h4></td>
@@ -89,6 +91,9 @@
                 <button style="margin-left: 150px; width: 200px; background-color: #C92127;color: #fff;/* border: 1px solid; */text-align: center;border-radius: 3px;" class="custom-btn">
                     <p style="margin-top:-4px;">Đặt hàng</p>
                 </button>
+               
+                    <a href="/cart/PaymentWithPayPal" class="btn btn-success btn-lg btn-block" id="paypalLink">Thanh toán bằng PayPal</a>
+               
             </div>
         </div>
     }
@@ -101,7 +106,9 @@ document.addEventListener('DOMContentLoaded', function () {
     var quantityInputs = document.querySelectorAll('.quantity-input');
     var priceCells = document.querySelectorAll('.price-cell');
     var totalPriceElement = document.getElementById('total-price');
+    var totalQuantityElement = document.getElementById('total-quantity'); // Reference to total quantity element
 
+    // Attach event listeners to each quantity input
     quantityInputs.forEach(function (input) {
         var wrapper = input.closest('.quantity-wrapper');
         var increaseBtn = wrapper.querySelector('.quantity-btn[data-action="increase"]');
@@ -109,21 +116,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
         increaseBtn.addEventListener('click', function () {
             var currentValue = parseInt(input.value);
-            var newValue = currentValue + 1;
-            updateQuantity(input, newValue);
+            var newValue = currentValue + 1; // Increase the quantity
+            updateQuantity(input, newValue); // Update the quantity
         });
 
         decreaseBtn.addEventListener('click', function () {
             var currentValue = parseInt(input.value);
             if (currentValue > 1) {
-                var newValue = currentValue - 1;
-                updateQuantity(input, newValue);
+                var newValue = currentValue - 1; // Decrease the quantity
+                updateQuantity(input, newValue); // Update the quantity
             }
         });
 
         input.addEventListener('input', function () {
             var newValue = parseInt(input.value);
-            updateQuantity(this, newValue);
+            updateQuantity(this, newValue); // Update the quantity on manual input
         });
     });
 
@@ -131,6 +138,9 @@ document.addEventListener('DOMContentLoaded', function () {
         var productId = input.dataset.productId;
         var priceCell = input.closest('tr').querySelector('.price-cell');
         var originalPrice = parseFloat(priceCell.dataset.price);
+
+        // Update the input field with the new quantity
+        input.value = newQuantity;
 
         fetch('@Url.Action("Update", "Cart")', {
             method: 'POST',
@@ -142,17 +152,16 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                var newPrice = originalPrice * newQuantity;
-                input.value = newQuantity;
-                priceCell.textContent = priceFormat.format(newPrice);
+                var newPrice = originalPrice * newQuantity; // Calculate new price based on quantity
+                priceCell.textContent = priceFormat.format(newPrice); // Update price in the cell
 
-                // Cập nhật tổng giá
-                updateTotalPrice();
+                // Update total price and total quantity after quantity change
+                updateTotalPriceAndQuantity();
             } else {
-                // Hiển thị thông báo lỗi và đặt lại số lượng về giá trị hợp lệ
+                // Display error message and reset quantity to valid value
                 alert(data.message);
-                input.value = data.validQuantity; // Giá trị hợp lệ là 1 nếu vượt tồn kho
-                updateQuantity(input, data.validQuantity); // Cập nhật lại giá sau khi chỉnh số lượng
+                input.value = data.validQuantity; // Reset input to valid quantity
+                updateQuantity(input, data.validQuantity); // Update quantity again based on valid quantity
             }
         })
         .catch(error => {
@@ -161,19 +170,47 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function updateTotalPrice() {
+    function updateTotalPriceAndQuantity() {
         var totalPrice = 0;
+        var totalQuantity = 0; // Initialize total quantity
         priceCells.forEach(function (cell) {
-            totalPrice += parseFloat(cell.dataset.price) * parseInt(cell.closest('tr').querySelector('.quantity-input').value);
+            var quantityInput = cell.closest('tr').querySelector('.quantity-input');
+            var quantity = parseInt(quantityInput.value); // Get current quantity
+            totalPrice += parseFloat(cell.dataset.price) * quantity; // Update total price calculation
+            totalQuantity += quantity; // Add to total quantity
         });
-        totalPriceElement.textContent = priceFormat.format(totalPrice);
+        totalPriceElement.textContent = priceFormat.format(totalPrice); // Display updated total price
+        totalQuantityElement.textContent = totalQuantity; // Display updated total quantity
     }
 
-    updateTotalPrice();
+    updateTotalPriceAndQuantity(); // Initial calculation for total price and quantity
+    // Paypal
+    document.getElementById('paypal-button').addEventListener('click', function () {
+    var totalPrice = '@ViewBag.TotalPrice'; // Lấy giá trị tổng tiền
+
+    fetch('@Url.Action("PayWithPayPal", "Cart")', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `amount=${totalPrice}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.redirectUrl) {
+            window.location.href = data.redirectUrl; // Chuyển hướng đến PayPal
+        } else {
+            alert('Đã có lỗi xảy ra trong quá trình thanh toán.');
+        }
+    })
+    .catch(error => {
+        console.error('Có lỗi xảy ra:', error);
+        alert('Có lỗi xảy ra khi kết nối với PayPal.');
+    });
 });
-
-
+});
 </script>
+
 
 <style>
     .quantity-wrapper {

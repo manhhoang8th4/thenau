@@ -21,5 +21,6 @@ namespace BookStoreOnline.Models
     
         public virtual DONHANG DONHANG { get; set; }
         public virtual SANPHAM SANPHAM { get; set; }
+    
     }
 }

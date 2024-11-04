@@ -50,7 +50,7 @@
                         <p style="font-size:medium;" class="app-sidebar__user-designation">Chào mừng bạn trở lại</p>
                     </div>
                 </div>
-                <ul class="app-menu" >
+                <ul class="app-menu">
                     <li>
                         <a class="app-menu__item" href="/Admin/Home_Page">
                             <span style="color:#ffffff" class="app-menu__label">Trang chính</span>
@@ -83,18 +83,28 @@
                     </li>
                     <hr style="color:#ffffff" class="sidebar-divider my-0">
                     <li>
-                        <a class="app-menu__item" href="/Admin/OrdersAdmin">
-                            <span style="color:#ffffff" class="app-menu__label">Danh Sách Đơn Hàng</span>
+                        <a class="app-menu__item" href="/Admin/OrdersAdmin?status=0">
+                            <span style="color:#ffffff" class="app-menu__label">Chưa Xác Nhận</span>
                         </a>
                     </li>
                     <li>
                         <a class="app-menu__item" href="/Admin/OrdersAdmin?status=1">
-                            <span style="color:#ffffff" class="app-menu__label">Đơn Hàng Đã Giao</span>
+                            <span style="color:#ffffff" class="app-menu__label">Đã Xác Nhận</span>
                         </a>
                     </li>
                     <li>
-                        <a class="app-menu__item" href="/Admin/OrdersAdmin?status=0">
-                            <span style="color:#ffffff" class="app-menu__label">Đơn Hàng Chưa Giao</span>
+                        <a class="app-menu__item" href="/Admin/OrdersAdmin?status=2">
+                            <span style="color:#ffffff" class="app-menu__label">Đang Giao Hàng</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="app-menu__item" href="/Admin/OrdersAdmin?status=3">
+                            <span style="color:#ffffff" class="app-menu__label">Đã Nhận Hàng</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="app-menu__item" href="/Admin/OrdersAdmin?status=4">
+                            <span style="color:#ffffff" class="app-menu__label">Đơn Hàng Đã Hủy</span>
                         </a>
                     </li>
                     <hr style="color:#ffffff" class="sidebar-divider my-0">

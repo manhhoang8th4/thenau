@@ -14,7 +14,7 @@ namespace BookStoreOnline.Controllers
         // GET: Category
         public ActionResult Index(int id)
         {
-            ViewBag.CategoryName = db.LOAIs.FirstOrDefault(n => n.Maloai == id).Tenloai;
+            ViewBag.CategoryName = db.LOAIs.FirstOrDefault(n => n.Maloai == id)?.Tenloai; // Use null-conditional operator
             return View(db.SANPHAMs.Where(book => book.MaLoai == id).ToList());
         }
 
@@ -25,9 +25,11 @@ namespace BookStoreOnline.Controllers
 
         public ActionResult Search(string inputString)
         {
-            ViewBag.TextSeatch = inputString;
+            ViewBag.TextSearch = inputString; // Corrected variable name
             var result = db.SANPHAMs
-                .Where(s => s.TenSanPham.Contains(inputString) || s.TacGia.Contains(inputString))
+                .Where(s => s.TenSanPham.Contains(inputString) ||
+                            s.TacGia.Contains(inputString) ||
+                            s.LOAI.Tenloai.Contains(inputString)) // Search by category name
                 .ToList();
 
             return View("Search", result); // Render the Search view with the result

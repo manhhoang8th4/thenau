@@ -1,9 +1,9 @@
-﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Web.Mvc;
+﻿using System; 
+using System.IdentityModel.Tokens.Jwt; 
+using System.Linq; 
+using System.Security.Claims; 
+using System.Text; 
+using System.Web.Mvc; 
 using Microsoft.IdentityModel.Tokens;
 using BookStoreOnline.Models;
 using System.Security.Cryptography;
@@ -12,31 +12,34 @@ public class UserController : Controller
 {
     private NhaSachEntities3 db = new NhaSachEntities3();
 
-    private const string SecretKey = "your_new_very_long_secret_key_at_least_32_characters!";
+    private const string SecretKey = "your_new_very_long_secret_key_at_least_32_characters!"; 
 
-    private string HashPassword(string password)
+    private string HashPassword(string password) 
     {
-        using (var sha256 = SHA256.Create())
-        {
-            var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-            return Convert.ToBase64String(bytes);
+        using (var sha256 = SHA256.Create()) 
+        { 
+            var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password)); 
+            return Convert.ToBase64String(bytes); 
         }
     }
 
-    private string GenerateAccessToken(KHACHHANG user)
+    private string GenerateAccessToken(KHACHHANG user) 
     {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.UTF8.GetBytes(SecretKey);
-
-        var tokenDescriptor = new SecurityTokenDescriptor
+        var tokenHandler = new JwtSecurityTokenHandler(); 
+        var key = Encoding.UTF8.GetBytes(SecretKey); 
+ 
+        var tokenDescriptor = new SecurityTokenDescriptor 
         {
-            Subject = new ClaimsIdentity(new[]
+            Subject = new ClaimsIdentity(new[] 
             {
-                new Claim(ClaimTypes.Name, user.MaKH.ToString()),
-                new Claim(ClaimTypes.Email, user.Email)
+                new Claim(ClaimTypes.Name, user.Ten), 
+                new Claim(ClaimTypes.Email, user.Email), 
+                new Claim("TrangThai", user.TrangThai.ToString()), 
+                new Claim("NgayTao", user.NgayTao?.ToString("yyyy-MM-dd HH:mm:ss")) 
+
             }),
-            Expires = DateTime.UtcNow.AddHours(1), // set access_token for 1 hour
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            Expires = DateTime.UtcNow.AddHours(1), // set access_token for 1 hour 
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature) 
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -65,21 +68,31 @@ public class UserController : Controller
                 ViewBag.ThongBaoEmail = "Đã có tài khoản đăng nhập bằng Email này";
                 return View();
             }
+            if (cus.MatKhau.Length < 6)
+            {
+                ViewBag.ThongBaoMK = "Mật khẩu phải có ít nhất 6 ký tự";
+                return View();
+            }
 
             if (cus.MatKhau == rePass)
             {
                 cus.TrangThai = true;
                 cus.NgayTao = DateTime.Now;
+                //Nguyễn Phúc Gia Huy
 
                 cus.MatKhau = HashPassword(cus.MatKhau);
 
                 db.KHACHHANGs.Add(cus);
                 db.SaveChanges();
+                ViewBag.ThongBao = "Đăng ký thành công";
 
+                // Tạo token
                 var accessToken = GenerateAccessToken(cus);
                 var refreshToken = GenerateRefreshToken();
 
+                // Lưu cả access_token và refresh_token vào cơ sở dữ liệu
                 cus.RefreshToken = refreshToken;
+                cus.AccessToken = accessToken;
                 cus.TokenExpiration = DateTime.UtcNow.AddDays(7); // set refresh_token for 7 days
                 db.SaveChanges();
 
@@ -128,10 +141,13 @@ public class UserController : Controller
                     return View();
                 }
 
+                // Tạo token mới
                 var accessToken = GenerateAccessToken(account);
                 var refreshToken = GenerateRefreshToken();
 
+                // Lưu access_token và refresh_token vào cơ sở dữ liệu
                 account.RefreshToken = refreshToken;
+                account.AccessToken = accessToken; 
                 account.TokenExpiration = DateTime.UtcNow.AddDays(7);
                 db.SaveChanges();
 
@@ -156,7 +172,11 @@ public class UserController : Controller
             return new HttpStatusCodeResult(401, "Refresh Token không hợp lệ hoặc đã hết hạn");
         }
 
+        // Tạo access token mới
         var newAccessToken = GenerateAccessToken(user);
+        user.AccessToken = newAccessToken; // Cập nhật access_token vào cơ sở dữ liệu
+        db.SaveChanges();
+
         return Json(new { accessToken = newAccessToken });
     }
 
@@ -233,41 +253,41 @@ public class UserController : Controller
     {
         if (ModelState.IsValid)
         {
-            var currentUser = Session["TaiKhoan"] as KHACHHANG;
-
-            if (currentUser != null)
+            var currentUser = Session["TaiKhoan"] as KHACHHANG;   
+ 
+            if (currentUser != null) 
             {
-                var user = db.KHACHHANGs.FirstOrDefault(u => u.MaKH == currentUser.MaKH);
+                var user = db.KHACHHANGs.FirstOrDefault(u => u.MaKH == currentUser.MaKH); 
                 if (user != null)
                 {
-                    user.Ten = updatedUser.Ten;
-                    user.Email = updatedUser.Email;
-                    user.DiaChi = updatedUser.DiaChi;
-                    user.SoDienThoai = updatedUser.SoDienThoai;
+                    user.Ten = updatedUser.Ten; 
+                    user.Email = updatedUser.Email; 
+                    user.DiaChi = updatedUser.DiaChi; 
+                    user.SoDienThoai = updatedUser.SoDienThoai; 
 
-                    db.SaveChanges();
-                    Session["TaiKhoan"] = user;
+                    db.SaveChanges(); 
+                    Session["TaiKhoan"] = user; 
 
-                    ViewBag.ThongBao = "Thông tin đã được cập nhật thành công!";
+                    ViewBag.ThongBao = "Thông tin đã được cập nhật thành công!"; 
                 }
                 else
                 {
-                    ViewBag.ThongBao = "Người dùng không tồn tại";
-                }
+                    ViewBag.ThongBao = "Người dùng không tồn tại"; 
+                } 
             }
             else
             {
-                ViewBag.ThongBao = "Người dùng chưa đăng nhập";
+                ViewBag.ThongBao = "Người dùng chưa đăng nhập"; 
             }
         }
-        return View(updatedUser);
+        return View(updatedUser); 
     }
 
-    public ActionResult LogOut()
+    public ActionResult LogOut() 
     {
-        Session["TaiKhoan"] = null;
-        Session["GioHang"] = null;
+        Session["TaiKhoan"] = null; 
+        Session["GioHang"] = null; 
 
-        return RedirectToAction("Login", "User");
-    }
-}
+        return RedirectToAction("Login", "User"); 
+    } 
+} 

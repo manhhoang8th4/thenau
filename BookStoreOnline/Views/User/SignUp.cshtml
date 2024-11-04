@@ -25,22 +25,28 @@
         }
     </div>
     <div class="form-group">
-        <label for="MatKhau">Mật Khẩu</label>   
+        <label for="MatKhau">Mật Khẩu</label>
         <input type="password" class="form-control" id="MatKhau" name="MatKhau" required />
+        @if (ViewBag.ThongBaoMK != null)
+        {
+            <div class="alert alert-danger mt-2">
+                @ViewBag.ThongBaoMK
+            </div>
+        }
     </div>
     <div class="form-group">
         <label for="rePass">Xác Nhận Mật Khẩu</label>
         <input type="password" class="form-control" id="rePass" name="rePass" required />
-        @if (ViewBag.ThongBao != null)
+        @if (ViewBag.ThongBaoMK != null)
         {
             <div class="alert alert-danger mt-2">
-                @ViewBag.ThongBao
+                @ViewBag.ThongBaoMK
             </div>
         }
     </div>
-    <div class="form-group"> 
+    <div class="form-group">
         <label for="rePass">Số Điện Thoại</label>
-        <input type="tel" class="form-control" id="rePass" name="rePass" required />
+        <input type="tel" class="form-control" id="SoDienThoai" name="SoDienThoai" required />
         @if (ViewBag.ThongBao != null)
         {
             <div class="alert alert-danger mt-2">
@@ -48,6 +54,18 @@
             </div>
         }
     </div>
+    <div class="form-group">
+        <label for="rePass">Địa Chỉ</label>
+        <input type="tel" class="form-control" id="DiaChi" name="DiaChi" required />
+        @if (ViewBag.ThongBao != null)
+        {
+            
+            <div class="alert alert-danger mt-2">
+                @ViewBag.ThongBao
+            </div>
+        }
+    </div>
+
     <button style=" width: 100px; padding: 0px; margin: 0; margin-left: 171px; background-color: #C92127; border:none; color:#fff; border-radius:5px;" class="btn btn-primary">Đăng Ký</button>
 
 </form>
