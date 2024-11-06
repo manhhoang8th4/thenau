@@ -17,29 +17,23 @@
 
 </head>
 
-
-
-
 <body style="background: #F9F5EE">
     <!-- header     -->
     <div style="background-color: #F9F5EE;" class="header">
         <div style="height:68px;" class="container head-content">
             <div class="row">
-                <div class="logo">
+                <div class="logo d-none d-lg-inline-block">
                     <a href="@Url.Action("Index","Home")"><img style=" border-radius: 50%; height: 100px; width: 80%;" src="~/Images/z5482551824090_8d0041d8091c42fc59c7cfff0e837099.jpg" alt=""></a>
                 </div>
-             
 
-
-                <div style="margin-left: 70px;" class="col-lg-6 head-middle">
-
+                <div style="margin-left: 70px;" class="col-lg-6 col-12  head-middle">
                     @using (Html.BeginForm("Search", "Category", FormMethod.Post))
                     {
                         <input style="width: 484px;" type="text" name="inputString" placeholder="Nhập từ khóa tìm kiếm...">
                         <button style="width: 91px; background-color: #c92127" type="submit"><i class="bi bi-search"></i></button>
                     }
                 </div>
-                <div class="col-lg-3 head-right">
+                <div class="col-lg-3  mt-auto mt-lg-0 head-right">
                     @if (user == null)
                     {
                       <a href="@Url.Action("Login","User")" style="margin-left: 50px;" class="cart-link">
@@ -66,12 +60,12 @@
                         <div class="dropdown show">
                             <a class="user-link-option" href="" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i style="margin: 20px; color: #c92127;"  class="bi bi-person-circle"></i>
-                                <p style="font-size: 18px; color: #c92127; width: 100px; "> @user.Ten</p>
+                                <p style="font-size: 10px; color: #c92127; width: 100px; "> @user.Ten</p>
 
                             </a>
 
 
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-menu mr-5" aria-labelledby="dropdownMenuLink">
 @**@                            <a class="dropdown-item" href="@Url.Action("UpdateInfo", "User")">Thông Tin Cá Nhân</a>
                                  <a class="dropdown-item" href="@Url.Action("Index/"+user.MaKH,"Order")">Đơn Hàng Của Bạn</a>
                                 <a class="dropdown-item" href="@Url.Action("ChangePassword", "User")">Đổi Mật Khẩu</a>
@@ -91,11 +85,8 @@
     <div class="nav">
         <div style="margin-top:20px; margin-bottom:-10px" class="container nav-list">
             <div class="row" style="align-items: center; background: #C92127; padding:3px; border-radius:3px;">
-
-             
-
-                <div   class="col-lg-8">
-                    <nav class="navbar navbar-expand-lg navbar-light">
+                <div class="col-lg-8">
+                    <nav class="navbar d-none d-lg-inline-block navbar-expand-lg navbar-light">
                         <div class="collapse navbar-collapse" id="">
                             <div style="margin-left: 49px;" class="navbar-nav">
                                 <a style="color: #000; margin-right: 40px;  height: auto; box-shadow: none; font-weight:500; " class="nav-item nav-link " href="@Url.Action("Index","Home")">Trang chủ <span class="sr-only">(current)</span></a>
@@ -110,13 +101,12 @@
     </div>
     <!-- end-nav -->
     @RenderBody()
-    <footer style="padding:10px;font-size:12px;height:576px;">
-
+    <footer class="col-lg-12 col-12" style="padding:10px;font-size:12px;height:576px;">
         <div class="footer-container">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-4 d-none d-lg-block">
                     <div style="border-right: 1px solid #cecece;height:300px;display:block;margin-bottom:100px" ; class="footer-information">
-                        <img style="width:450px;" src="~/Images/z5482551824090_8d0041d8091c42fc59c7cfff0e837099.jpg" />
+                        <img class="col-12" style="width:450px;" src="~/Images/z5482551824090_8d0041d8091c42fc59c7cfff0e837099.jpg" />
                     </div>
                 </div>
                 <div style="float:right" class="col-md-8">
@@ -198,20 +188,17 @@
                         </ul>
                     </div>
                     <div class="footer-donvihotro">
-                        <img style="display:block" src="~/Images/donvihotro.jpg" />
+                        <img class="d-none d-lg-block" style="display:block" src="~/Images/donvihotro.jpg" />
                     </div>
 
                 </div>
             </div>
         </div>
         <div style="margin-top:60px;margin-left:120px; text-align:center;display:inline-block;" class="copyright">
-            <h6>
-
+            <h6 class="d-lg-block d-none">
                 Giấy chứng nhận Đăng ký Kinh doanh số 0304132047 do Sở Kế hoạch và Đầu tư Thành phố Hồ Chí Minh cấp ngày 20/12/2005, đăng ký thay đổi lần thứ 10, ngày 20/05/2022.
             </h6>
         </div>
-
-
     </footer>
 
 
