@@ -12,8 +12,8 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 <link href="~/Content/Home.css" rel="stylesheet" />
 
-<section style="margin-top:25px;" class="hero">
-    <div style="width:100%;" class="slide-show">
+<section style="margin-top:25px;" class="hero col-lg-12 col-12"">
+    <div style="width:100%;" class="slide-show col-12">
         <div class="list-images">
             <img src="~/Images/Cardgame_Slide_T6_840x320.jpg" alt="Slide 1">
             <img src="~/Images/MangaWeek_T524_MangaFiesta_Slidebanner_840x320.jpg" alt="Slide 2">
@@ -157,10 +157,10 @@
     }
 </style>
 
-<div style="padding:0;" class="container body-page">
+<div style="padding:0;" class="col-lg-10 col-12 container body-page">
     <h3 style="text-align: center; margin: 30px auto; display: flex; align-items: center; justify-content: center; color: #fff; background-color: #c92127; border: 2px solid #C92127; font-size: 18px; font-weight: 700; width: 210px; max-width: 100%; height: 40px; border-radius: 8px; cursor: pointer; transition: all 0.5s;">Sách Hot</h3>
     <hr />
-    <div class="row">
+    <divstyle="margin-left:12px" class="row col-lg-12 col-12 ml-1">
         @foreach (var item in Model)
         {
             var soldQuantity = item.SoLuongBan;
@@ -174,8 +174,9 @@
             // Tính số sao trung bình
             var reviews = item.DANHGIAs;
             var averageRating = reviews.Any() ? reviews.Average(r => r.SoSao) : 0;
-            var roundedRating = Math.Round(averageRating, 1); 
-         <div class="col-lg-3 prod-item">
+            var roundedRating = Math.Round(averageRating, 1); // Làm tròn đến 1 chữ số thập phân
+
+          <div class="col-lg-3 prod-item">
               <div class="card" style="width: 18rem;">
                   <a href="@Url.Action("Index", "ProductDetail", new { id = item.MaSanPham })">
                       <img class="card-img-top" src="~/Images/@item.Anh" alt="Ảnh sản phẩm">
