@@ -83,7 +83,7 @@
         position: absolute;
         left: 0;
         top: 0;
-        background-color: #C92127 !important; /* Đảm bảo màu sắc chính xác */
+        background-color: #C92127 !important; 
         z-index: 1;
     }
 
@@ -101,12 +101,11 @@
 
     .hero {
         width: 1150px;
-        /* Điều chỉnh kích thước tối đa của khung trình chiếu */
-        margin: 25px auto; /* Canh giữa khung trình chiếu */
+        margin: 25px auto; 
         overflow: hidden;
-        border-radius: 10px; /* Bo tròn góc khung trình chiếu */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ để khung trình chiếu nổi bật hơn */
-        margin-bottom: 10px; /* Thêm khoảng cách dưới khung trình chiếu để gần với nút sách */
+        border-radius: 10px; 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        margin-bottom: 10px; 
     }
 
     .slide-show {
@@ -120,13 +119,12 @@
         transition: transform 0.5s ease-in-out;
     }
 
-        .list-images img {
+    .list-images img {
             width: 100%;
             height: auto;
             flex-shrink: 0;
-            border-radius: 10px; /* Bo tròn góc ảnh */
+            border-radius: 10px; 
         }
-
     .btnn {
         position: absolute;
         top: 50%;
@@ -144,25 +142,19 @@
         padding: 10px;
         transition: background-color 0.3s ease;
     }
-
-        .btn-left:hover, .btn-right:hover {
+    .btn-left:hover, .btn-right:hover {
             background-color: rgba(0, 0, 0, 0.8);
         }
-
-    }
-
     .rating-stars {
         display: flex;
     }
-
-        .rating-stars .fa-star {
+    .rating-stars .fa-star {
             font-size: 1.5em; /* Kích thước sao */
             color: #D3D3D3; /* Màu xám cho sao chưa được đánh giá */
-        }
-
-            .rating-stars .fa-star.filled {
-                color: #FFD700; /* Màu vàng cho sao đã được đánh giá */
-            }
+    }
+    .rating-stars .fa-star.filled {
+          color: #FFD700; /* Màu vàng cho sao đã được đánh giá */
+    }
 </style>
 
 <div style="padding:0;" class="container body-page">
@@ -178,14 +170,12 @@
 
             var progressBarColor = percentageSold == 100 ? "#C92127" :
                                    percentageSold >= 50 ? "#F39C12" :
-                                   "#27AE60"; // Điều chỉnh màu sắc theo nhu cầu
-
+                                   "#27AE60"; 
             // Tính số sao trung bình
             var reviews = item.DANHGIAs;
             var averageRating = reviews.Any() ? reviews.Average(r => r.SoSao) : 0;
-            var roundedRating = Math.Round(averageRating, 1); // Làm tròn đến 1 chữ số thập phân
-
-          <div class="col-lg-3 prod-item">
+            var roundedRating = Math.Round(averageRating, 1); 
+         <div class="col-lg-3 prod-item">
               <div class="card" style="width: 18rem;">
                   <a href="@Url.Action("Index", "ProductDetail", new { id = item.MaSanPham })">
                       <img class="card-img-top" src="~/Images/@item.Anh" alt="Ảnh sản phẩm">
