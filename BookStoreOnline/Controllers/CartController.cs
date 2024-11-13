@@ -14,7 +14,7 @@ namespace BookStoreOnline.Controllers
         private readonly NhaSachEntities3 db = new NhaSachEntities3();
 
         // GET: Cart
-        public ActionResult Index() 
+        public ActionResult Index()
         {
             return View();
         }
@@ -24,7 +24,7 @@ namespace BookStoreOnline.Controllers
         {
             if (Session["GioHang"] is List<CartItem> cart)
             {
-                return cart;  
+                return cart;
             }
 
 
@@ -234,32 +234,11 @@ namespace BookStoreOnline.Controllers
 
             return Json(new { success = true });
         }
-
-        // Apply discount to cart
         [HttpPost]
-        public JsonResult ApplyDiscount(string discountCode)
+        public ActionResult InsertOrder(string address)
         {
-            var discount = db.KHUYENMAIs
-                .FirstOrDefault(d => d.MaKM == discountCode && d.KichHoat && d.NgayBatDau <= DateTime.Now && d.NgayKetThuc >= DateTime.Now);
+           
 
-            /*   if (discount == null)
-               {
-                   return Json(new { success = false, message = "Mã khuyến mãi không hợp lệ!" });
-               }*/
-
-            // Calculate discount amount based on discount code
-            var discountAmount = discount.SoTienKM;
-
-            // Save discount amount to session or other store if necessary
-            Session["DiscountAmount"] = discountAmount;
-
-            return Json(new { success = true, discountAmount });
-        }
-
-        // Insert order and clear cart
-        [HttpPost]
-        public ActionResult InsertOrder(string address, int paymentMethod)
-        {
             var cartItems = GetCart();
             if (cartItems == null || !cartItems.Any())
             {
@@ -267,8 +246,7 @@ namespace BookStoreOnline.Controllers
             }
 
             var customer = Session["TaiKhoan"] as KHACHHANG;
-            if (customer == null)  
-
+            if (customer == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Not logged in.");
             }
@@ -287,7 +265,7 @@ namespace BookStoreOnline.Controllers
                         NgayDat = DateTime.Now,
                         DiaChi = address,
                         TrangThai = 0, // Not confirmed
-                        PhuongThucThanhToan = paymentMethod,
+                    /*    PhuongThucThanhToan = paymentMethod.Value,*/
                         TongTien = roundedFinalPrice
                     };
 
@@ -299,7 +277,6 @@ namespace BookStoreOnline.Controllers
                         var product = db.SANPHAMs.Find(item.ProductID);
                         if (product == null)
                         {
-                            
                             return HttpNotFound("Product not found.");
                         }
 
@@ -335,6 +312,35 @@ namespace BookStoreOnline.Controllers
                     return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Order processing error.");
                 }
             }
+        }
+
+        [HttpPost]
+        public JsonResult ApplyDiscount(string discountCode)
+        {
+            var discount = db.KHUYENMAIs.FirstOrDefault(d => d.MaKM == discountCode && d.KichHoat == true);
+            decimal discountAmount = 0;
+            decimal totalPrice = GetTotalPrice(); // Get the current total price before discount
+
+            if (discount != null)
+            {
+                if (totalPrice >= discount.SoTienMuaHangToiThieu)
+                {
+                    discountAmount = discount.SoTienKM;
+                    totalPrice -= discountAmount; // Apply discount
+                    Session["DiscountAmount"] = discountAmount;
+                    Session["FinalPrice"] = totalPrice;
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Không đạt yêu cầu tối thiểu để áp dụng mã khuyến mãi." });
+                }
+            }
+            else
+            {
+                return Json(new { success = false, message = "Mã khuyến mãi không hợp lệ hoặc đã hết hạn" });
+            }
+
+            return Json(new { success = true, discountAmount = discountAmount, finalPrice = totalPrice });
         }
         public ActionResult FailureView()
         {

@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using BookStoreOnline.Models;
 using System.Security.Cryptography;
+using System.Web;
 
 public class UserController : Controller
 {
@@ -50,6 +51,45 @@ public class UserController : Controller
     {
         return Convert.ToBase64String(Guid.NewGuid().ToByteArray());
     }
+    private void SetAccessTokenCookie(string accessToken)
+    {
+
+        var cookie = new HttpCookie("accessToken", accessToken)
+        {
+            HttpOnly = true, 
+            Secure = Request.IsSecureConnection, 
+            Expires = DateTime.UtcNow.AddHours(1) 
+        };
+        Response.Cookies.Add(cookie);
+    }
+    private void SetRefreshTokenCookie(string refreshToken)
+    {
+        var cookie = new HttpCookie("refreshToken", refreshToken)
+        {
+            HttpOnly = true, // Bảo mật: Cookie chỉ có thể truy cập từ server
+            Secure = Request.IsSecureConnection, // Chỉ gửi cookie qua HTTPS nếu có
+            Expires = DateTime.UtcNow.AddDays(7) // Thời hạn của refresh token
+        };
+        Response.Cookies.Add(cookie);
+    }
+
+    private string GetRefreshTokenFromCookie()
+    {
+        var cookie = Request.Cookies["refreshToken"];
+        return cookie != null ? cookie.Value : null;
+    }
+
+    private void RemoveRefreshTokenCookie()
+    {
+        if (Request.Cookies["refreshToken"] != null)
+        {
+            var cookie = new HttpCookie("refreshToken")
+            {
+                Expires = DateTime.UtcNow.AddDays(-1)
+            };
+            Response.Cookies.Add(cookie);
+        }
+    }
 
     [HttpGet]
     public ActionResult SignUp()
@@ -78,8 +118,6 @@ public class UserController : Controller
             {
                 cus.TrangThai = true;
                 cus.NgayTao = DateTime.Now;
-                //Nguyễn Phúc Gia Huy
-
                 cus.MatKhau = HashPassword(cus.MatKhau);
 
                 db.KHACHHANGs.Add(cus);
@@ -96,6 +134,9 @@ public class UserController : Controller
                 cus.TokenExpiration = DateTime.UtcNow.AddDays(7); // set refresh_token for 7 days
                 db.SaveChanges();
 
+                // Lưu access token vào cookie
+                SetAccessTokenCookie(accessToken);
+
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -106,12 +147,12 @@ public class UserController : Controller
         return View();
     }
 
+
     [HttpGet]
     public ActionResult Login()
     {
         return View();
     }
-
     [HttpPost]
     public ActionResult Login(KHACHHANG taikhoan)
     {
@@ -145,11 +186,16 @@ public class UserController : Controller
                 var accessToken = GenerateAccessToken(account);
                 var refreshToken = GenerateRefreshToken();
 
-                // Lưu access_token và refresh_token vào cơ sở dữ liệu
-                account.RefreshToken = refreshToken;
-                account.AccessToken = accessToken; 
+                // Lưu access_token vào cơ sở dữ liệu
+                account.AccessToken = accessToken;
                 account.TokenExpiration = DateTime.UtcNow.AddDays(7);
                 db.SaveChanges();
+
+                // Lưu access token vào cookie
+                SetAccessTokenCookie(accessToken);
+
+                // Lưu refresh token vào cookie
+                SetRefreshTokenCookie(refreshToken);
 
                 Session["TaiKhoan"] = account;
                 return RedirectToAction("Index", "Home");
@@ -161,10 +207,21 @@ public class UserController : Controller
         }
         return View();
     }
-
-    [HttpPost]
-    public ActionResult RefreshToken(string refreshToken)
+    private string GetAccessTokenFromCookie()
     {
+        var cookie = Request.Cookies["accessToken"];
+        return cookie != null ? cookie.Value : null;
+    }
+    [HttpPost]
+    public ActionResult RefreshToken()
+    {
+        var refreshToken = GetRefreshTokenFromCookie();
+
+        if (string.IsNullOrEmpty(refreshToken))
+        {
+            return new HttpStatusCodeResult(401, "Refresh Token không hợp lệ hoặc đã hết hạn");
+        }
+
         var user = db.KHACHHANGs.FirstOrDefault(u => u.RefreshToken == refreshToken && u.TokenExpiration > DateTime.UtcNow);
 
         if (user == null)
@@ -174,7 +231,7 @@ public class UserController : Controller
 
         // Tạo access token mới
         var newAccessToken = GenerateAccessToken(user);
-        user.AccessToken = newAccessToken; // Cập nhật access_token vào cơ sở dữ liệu
+        user.AccessToken = newAccessToken;
         db.SaveChanges();
 
         return Json(new { accessToken = newAccessToken });
@@ -185,7 +242,6 @@ public class UserController : Controller
     {
         return View();
     }
-
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult ChangePassword(string oldPassword, string newPassword, string confirmPassword)
@@ -230,7 +286,6 @@ public class UserController : Controller
         }
         return View();
     }
-
     [HttpGet]
     public ActionResult UpdateInfo()
     {
@@ -246,7 +301,6 @@ public class UserController : Controller
         }
         return RedirectToAction("Login", "User");
     }
-
     [HttpPost]
     [ValidateAntiForgeryToken]
     public ActionResult UpdateInfo(KHACHHANG updatedUser)
@@ -282,11 +336,12 @@ public class UserController : Controller
         }
         return View(updatedUser); 
     }
-
     public ActionResult LogOut() 
     {
         Session["TaiKhoan"] = null; 
         Session["GioHang"] = null; 
+
+        RemoveRefreshTokenCookie();
 
         return RedirectToAction("Login", "User"); 
     } 

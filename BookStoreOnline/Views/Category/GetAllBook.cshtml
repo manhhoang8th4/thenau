@@ -12,10 +12,10 @@
 
 <div class="container body-page">
     <div class="row">
-        <div class="col-lg-3">
+        <div class="col-lg-3 col-3">
             @{ Html.RenderAction("GetCategorySelection", "CategoryPartial"); }
         </div>
-        <div class="col-lg-9 list-book">
+        <div class="col-lg-9 ml-lg-0 ml-5 list-book">
             <h3 style="color:gray">Tất cả sách</h3>
             <div class="row">
                 @foreach (var item in Model)
