@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<BookStoreOnline.Models.DONHANG>
 @using BookStoreOnline.Areas.Admin.Constants;
-
+@using PagedList;
 @{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
@@ -17,8 +17,8 @@
                 <th>Ngày đặt</th>
                 <th>Địa chỉ giao hàng</th>
                 <th>Trạng thái đơn hàng</th>
-                <th>Phương Thức Thanh Toán</th>
                 <th>Trạng Thái Thanh Toán</th>
+                <th>Phương Thức Thanh Toán</th>
                 <th>Hoạt động</th>
             </tr>
 

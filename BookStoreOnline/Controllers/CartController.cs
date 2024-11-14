@@ -6,6 +6,8 @@ using System.Net;
 using System.Web.Mvc;
 using PayPal.Api;
 using BookStoreOnline.Models;
+using System.Web.Util;
+using System.Threading.Tasks;
 
 namespace BookStoreOnline.Controllers
 {
@@ -237,8 +239,6 @@ namespace BookStoreOnline.Controllers
         [HttpPost]
         public ActionResult InsertOrder(string address)
         {
-           
-
             var cartItems = GetCart();
             if (cartItems == null || !cartItems.Any())
             {
@@ -265,7 +265,84 @@ namespace BookStoreOnline.Controllers
                         NgayDat = DateTime.Now,
                         DiaChi = address,
                         TrangThai = 0, // Not confirmed
-                    /*    PhuongThucThanhToan = paymentMethod.Value,*/
+                        TongTien = roundedFinalPrice
+                    };
+              
+
+                    db.DONHANGs.Add(order);
+                    db.SaveChanges();
+
+                    foreach (var item in cartItems)
+                    {
+                        var product = db.SANPHAMs.Find(item.ProductID);
+                        if (product == null)
+                        {
+                            return HttpNotFound("Product not found.");
+                        }
+
+                        if (item.Number > product.SoLuong)
+                        {
+                            return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Quá số lượng tồn trong kho.");
+                        }
+
+                        var orderDetail = new CHITIETDONHANG
+                        {
+                            MaDonHang = order.MaDonHang,
+                            MaSanPham = item.ProductID,
+                            SoLuong = item.Number
+                        };
+                        db.CHITIETDONHANGs.Add(orderDetail);
+
+                        product.SoLuong -= item.Number;
+                        product.SoLuongBan += item.Number;
+                        db.Entry(product).State = EntityState.Modified;
+                    }
+
+                    db.SaveChanges();
+                    // Do not clear cart until PayPal payment is confirmed
+                    Session["GioHang"] = null;
+                    Session["DiscountAmount"] = null;
+                    Session["FinalPrice"] = null;
+
+                    transaction.Commit();
+
+                    return RedirectToAction("momo", "Cart", new { id = order.MaDonHang });
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Order processing error.");
+                }
+            }
+        }
+        public ActionResult InsertOrder1(string address)
+        {
+            var cartItems = GetCart();
+            if (cartItems == null || !cartItems.Any())
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Empty cart.");
+            }
+
+            var customer = Session["TaiKhoan"] as KHACHHANG;
+            if (customer == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Not logged in.");
+            }
+
+            var discountAmount = Session["DiscountAmount"] as decimal? ?? 0;
+            var finalPrice = Session["FinalPrice"] as decimal? ?? GetTotalPrice();
+            var roundedFinalPrice = (int)Math.Round(finalPrice);
+
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    var order = new DONHANG
+                    {
+                        ID = customer.MaKH,
+                        NgayDat = DateTime.Now,
+                        DiaChi = address,
+                        TrangThai = 0, // Not confirmed
                         TongTien = roundedFinalPrice
                     };
 
@@ -299,12 +376,14 @@ namespace BookStoreOnline.Controllers
                     }
 
                     db.SaveChanges();
+                    // Do not clear cart until PayPal payment is confirmed
                     Session["GioHang"] = null;
                     Session["DiscountAmount"] = null;
                     Session["FinalPrice"] = null;
+
                     transaction.Commit();
 
-                    return RedirectToAction("Index", "Order", new { id = customer.MaKH });
+                    return RedirectToAction("Index","Order");
                 }
                 catch (Exception ex)
                 {
@@ -413,6 +492,7 @@ namespace BookStoreOnline.Controllers
             };
             return this.payment.Execute(apiContext, paymentExecution);
         }
+      
         private Payment CreatePayment(APIContext apiContext, string redirectUrl)
         {
             /* List<CartItem> listSanPham = Session["GioHang"] as List<CartItem>;
@@ -496,7 +576,31 @@ namespace BookStoreOnline.Controllers
             // Create a payment using a APIContext  
             return this.payment.Create(apiContext);
         }
+        public async Task<ActionResult> momo(int id)
+        {
+           
+            var checkid = db.DONHANGs.Where(s => s.MaDonHang == id).FirstOrDefault();
+            var tongtien = checkid.TongTien;
+            var paymentService = new PaymentService();
+            string orderInfo = $"ma kac hasnh - {id}";
+            string redirectUrl = Url.Action("callback", "cart", new { id = id }, Request.Url.Scheme);
+            string callbackUrl = Url.Action("PremiumFailure", "truyen", null, Request.Url.Scheme);
+            string paymentUrl = await paymentService.CreateMoMoPaymentAsync(tongtien, orderInfo, redirectUrl, callbackUrl);
 
-
+            if (string.IsNullOrEmpty(paymentUrl))
+            {
+                throw new Exception("Failed to create MoMo payment URL");
+            }
+            return Redirect(paymentUrl);
+        }
+       public ActionResult callback(int id)
+       {
+            var checkid = db.DONHANGs.Where(s=> s.MaDonHang == id).FirstOrDefault();
+            if(checkid == null)
+            {
+                return HttpNotFound();
+            }
+            return RedirectToAction("Index","Order");
+       }
     }
 }

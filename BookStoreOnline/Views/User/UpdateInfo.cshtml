@@ -28,7 +28,7 @@
     <div class="form-group">
         @Html.LabelFor(m => m.Email)
         @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.Email)
+        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "validation-error" })
     </div>
 
     <div class="form-group">
@@ -44,8 +44,10 @@
     </div>
     <button type="submit" style="background-color: #c92127; text-align: center; margin: 30px auto; display: flex; align-items: center; justify-content: center; color: #fff; border: 2px solid #C92127; font-size: 18px; font-weight: 700; width: 210px; height: 40px; border-radius: 8px; cursor: pointer; transition: all 0.5s;" class="btn btn-primary">Cập nhật thông tin</button>
 </div>
-
-
-
-    
 }
+<style>
+    .validation-error {
+        color: red; /* Đặt màu chữ là đỏ */
+        font-weight: bold;
+    }
+</style>

@@ -58,9 +58,10 @@
                 <textarea style="border:1px solid #ccc;" name="address" placeholder="Nhập địa chỉ giao hàng" rows="4" required></textarea>
                 <h5 style="color:#000;" class="payment-method-title">Phương thức thanh toán</h5>
                 <select id="paymentMethod1" name="paymentMethod1" class="form-control">
-                    <option value="">Chọn phương thức thanh toán</option>
-                    <option value="cod">Thanh toán khi nhận hàng (COD)</option>
+                    <option value="">Chọn phương thức thanh toán </option>
+                    <option value="cod">Thanh toán bằng momo</option>
                     <option value="paypal">Chuyển khoản ngân hàng</option>
+                    <option value="momo">Thanh toán khi nhận hàng (COD)</option>
                 </select>
 
                 <!-- Thêm vào trong phần <div class="col-lg-6"> sau phần phương thức thanh toán -->
@@ -89,10 +90,13 @@
                     </tr>
                 </table>
                 <button id="codButton" style="margin-left: 150px; width: 200px; background-color: #C92127;color: #fff;/* border: 1px solid; */text-align: center;border-radius: 3px;" class="custom-btn">
-                    <p style="margin-top:-4px;">Đặt hàng</p>
+                    <p style="margin-top:-4px;">Thanh toán bằng MoMo</p>
                 </button>
                 <div id="paypalButton" style="display: none; ">
                     <a href="/cart/PaymentWithPayPal" class="btn btn-success btn-lg btn-block" id="paypalLink" style="margin-left: 150px; width: 240px; background-color: #C92127; color: #fff; /* border: 1px solid; */ text-align: center; border-radius: 3px; color: rgb(255, 255, 255); height: 46px; ">Thanh toán bằng PayPal</a>
+                </div>
+                <div id="momoButton" style="display: none; ">
+                    <a href="/cart/InsertOrder1" class="btn btn-success btn-lg btn-block" id="paypalLink" style="margin-left: 150px; width: 240px; background-color: #C92127; color: #fff; /* border: 1px solid; */ text-align: center; border-radius: 3px; color: rgb(255, 255, 255); height: 46px; ">Đặt Hàng</a>
                 </div>
             </div>
         </div>
@@ -111,6 +115,7 @@
     var paymentMethodSelect = document.getElementById("paymentMethod1");
     var codButton = document.getElementById("codButton");
     var paypalButton = document.getElementById("paypalButton");
+     var momoButton = document.getElementById("momoButton");
 
     // Add event listeners for quantity increase and decrease buttons
     quantityInputs.forEach(function (input) {
@@ -237,7 +242,20 @@
             paypalButton.style.display = "none";
         }
     });
-
+     //MoMo
+     paymentMethodSelect.addEventListener("change", function () {
+         var paymentMethod = paymentMethodSelect.value;
+         if (paymentMethod === "cod") {
+             codButton.style.display = "block";
+             momoButton.style.display = "none";
+         } else if (paymentMethod === "momo") {
+             codButton.style.display = "none";
+             momoButton.style.display = "block";
+         } else {
+             codButton.style.display = "none";
+             paypa.style.display = "none";
+         }
+     });
     // Ensure payment method button visibility is correct on page load
     paymentMethodSelect.dispatchEvent(new Event("change"));
 });
