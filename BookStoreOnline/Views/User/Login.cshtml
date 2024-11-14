@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -19,14 +18,18 @@
         <label for="MatKhau">Mật Khẩu</label>
         <input type="password" class="form-control" id="MatKhau" name="MatKhau" required />
     </div>
-    <button style=" width: 100px; padding: 0px; margin: 0; margin-left: 171px; background-color: #C92127; border:none; color:#fff; border-radius:5px;" type="submit"  class=" btn-primary custom-btn">Đăng Nhập</button>
-     @if (ViewBag.ThongBao != null)
 
+    <button style="width: 100px; padding: 0px; margin: 0; margin-left: 171px; background-color: #C92127; border:none; color:#fff; border-radius:5px;" type="submit" class="btn-primary custom-btn">Đăng Nhập</button>
+
+    @if (ViewBag.ThongBao != null)
     {
         <div class="alert alert-danger mt-2">
             @ViewBag.ThongBao
         </div>
-        
     }
+    <div class="form-group mt-3 text-center">
+        <a href="@Url.Action("ForgotPassword", "User")" style="color: #007bff; text-decoration: underline;">
+            Quên mật khẩu?
+        </a>
+    </div>
 </form>
-

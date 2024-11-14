@@ -55,6 +55,8 @@
           <Property Name="RefreshToken" Type="nvarchar" MaxLength="500" />
           <Property Name="TokenExpiration" Type="datetime" />
           <Property Name="AccessToken" Type="nvarchar" MaxLength="500" />
+          <Property Name="ResetPasswordToken" Type="nvarchar" MaxLength="255" />
+          <Property Name="ResetTokenExpiration" Type="datetime" />
         </EntityType>
         <EntityType Name="KHUYENMAI">
           <Key>
@@ -309,6 +311,8 @@ warning 6035: The relationship 'FK_DONHANG_KHUYENMAI' has columns that are not p
           <Property Name="RefreshToken" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <Property Name="TokenExpiration" Type="DateTime" Precision="3" />
           <Property Name="AccessToken" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="ResetPasswordToken" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ResetTokenExpiration" Type="DateTime" Precision="3" />
           <NavigationProperty Name="DANHGIAs" Relationship="Self.FK_DANHGIA_KHACHHANG" FromRole="KHACHHANG" ToRole="DANHGIA" />
           <NavigationProperty Name="DONHANGs" Relationship="Self.FK_Donhang_Khachhang" FromRole="KHACHHANG" ToRole="DONHANG" />
         </EntityType>
@@ -565,6 +569,8 @@ warning 6035: The relationship 'FK_DONHANG_KHUYENMAI' has columns that are not p
                 <ScalarProperty Name="RefreshToken" ColumnName="RefreshToken" />
                 <ScalarProperty Name="TokenExpiration" ColumnName="TokenExpiration" />
                 <ScalarProperty Name="AccessToken" ColumnName="AccessToken" />
+                <ScalarProperty Name="ResetPasswordToken" ColumnName="ResetPasswordToken" />
+                <ScalarProperty Name="ResetTokenExpiration" ColumnName="ResetTokenExpiration" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

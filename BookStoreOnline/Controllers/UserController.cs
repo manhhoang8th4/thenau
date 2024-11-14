@@ -8,6 +8,8 @@ using Microsoft.IdentityModel.Tokens;
 using BookStoreOnline.Models;
 using System.Security.Cryptography;
 using System.Web;
+using System.Net.Mail;
+using System.Net;
 
 public class UserController : Controller
 {
@@ -236,7 +238,150 @@ public class UserController : Controller
 
         return Json(new { accessToken = newAccessToken });
     }
+    [HttpGet]
+    public ActionResult ForgotPassword()
+    {
+        return View();
+    }
 
+    [HttpPost]
+    public ActionResult ForgotPassword(string email)
+    {
+        if (string.IsNullOrEmpty(email))
+        {
+            ViewBag.ThongBao = "Vui lòng nhập email của bạn.";
+            return View();
+        }
+
+        // Kiểm tra email có tồn tại không
+        var user = db.KHACHHANGs.FirstOrDefault(u => u.Email == email);
+        if (user == null)
+        {
+            ViewBag.ThongBao = "Không tìm thấy tài khoản với email này.";
+            return View();
+        }
+
+        // Tạo token khôi phục mật khẩu
+        user.ResetPasswordToken = Guid.NewGuid().ToString();
+        user.ResetTokenExpiration = DateTime.UtcNow.AddHours(1); // Token hết hạn sau 1 giờ
+        db.SaveChanges();
+
+        // Tạo link khôi phục mật khẩu
+        var resetLink = Url.Action("ResetPassword", "User",
+                        new { token = user.ResetPasswordToken },
+                        Request.Url.Scheme);
+
+        // Gửi email khôi phục mật khẩu
+        SendPasswordResetEmail(user.Email, resetLink);
+
+        ViewBag.ThongBao = "Đã gửi email khôi phục mật khẩu. Vui lòng kiểm tra hộp thư của bạn.";
+        return View();
+    }
+
+    public void SendPasswordResetEmail(string email, string resetLink)
+    {
+        try
+        {
+            // Tạo đối tượng MailMessage
+            MailMessage mail = new MailMessage();
+            mail.From = new MailAddress("manhhoang8th4@gmail.com");
+            mail.To.Add(email);
+            mail.Subject = "Khôi phục mật khẩu";
+            mail.Body = $"Nhấp vào liên kết để đặt lại mật khẩu của bạn: <a href='{resetLink}'>Đặt lại mật khẩu</a>";
+            mail.IsBodyHtml = true;
+
+            // Cấu hình SMTP client
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+            smtpClient.Credentials = new NetworkCredential("manhhoang8th4@gmail.com", "jsex khqd lexg wzsq");
+            smtpClient.EnableSsl = true; // Kết nối bảo mật
+
+            // Gửi email
+            smtpClient.Send(mail);
+        }
+        catch (SmtpException ex)
+        {
+            // Xử lý lỗi nếu có
+            throw new Exception("Gửi email thất bại. Vui lòng kiểm tra lại cấu hình SMTP.", ex);
+        }
+    }
+    [HttpGet]
+    public ActionResult ResetPassword(string token)
+    {
+        if (string.IsNullOrEmpty(token))
+        {
+            ViewBag.ThongBao = "Token không hợp lệ.";
+            return RedirectToAction("Index","Home");
+        }
+
+        var user = db.KHACHHANGs
+                    .FirstOrDefault(u => u.ResetPasswordToken == token && u.ResetTokenExpiration > DateTime.UtcNow);
+
+        if (user == null)
+        {
+            ViewBag.ThongBao = "Token không hợp lệ hoặc đã hết hạn.";
+            return RedirectToAction("Login");
+        }
+
+        ViewBag.Token = token;
+        return View();
+    }
+
+    // POST: User/ResetPassword
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public ActionResult ResetPassword(string token, string newPassword, string confirmPassword)
+    {
+        if (string.IsNullOrEmpty(token))
+        {
+            ViewBag.ThongBao = "Token không hợp lệ.";
+            return RedirectToAction("Login");
+        }
+
+        if (string.IsNullOrEmpty(newPassword) || string.IsNullOrEmpty(confirmPassword))
+        {
+            ViewBag.ThongBao = "Vui lòng nhập mật khẩu mới.";
+            ViewBag.Token = token;
+            return View();
+        }
+
+        if (newPassword != confirmPassword)
+        {
+            ViewBag.ThongBao = "Mật khẩu xác nhận không khớp.";
+            ViewBag.Token = token;
+            return View();
+        }
+
+        // Kiểm tra token trong cơ sở dữ liệu
+        var user = db.KHACHHANGs
+                    .FirstOrDefault(u => u.ResetPasswordToken == token && u.ResetTokenExpiration > DateTime.UtcNow);
+
+        if (user == null)
+        {
+            ViewBag.ThongBao = "Token không hợp lệ hoặc đã hết hạn.";
+            return RedirectToAction("Login");
+        }
+
+        try
+        {
+            // Mã hóa mật khẩu mới
+            user.MatKhau = HashPassword(newPassword);
+            user.ResetPasswordToken = null;  // Xóa token sau khi sử dụng
+            user.ResetTokenExpiration = null;  // Xóa thời gian hết hạn token
+            db.SaveChanges();  // Lưu thay đổi vào cơ sở dữ liệu
+
+            TempData["ThongBao"] = "Mật khẩu đã được đặt lại thành công!";
+            return RedirectToAction("Login");
+        }
+        catch (Exception ex)
+        {
+            ViewBag.ThongBao = "Đã xảy ra lỗi khi đặt lại mật khẩu. Vui lòng thử lại.";
+            ViewBag.Token = token;
+            return View();
+        }
+    }
+
+    // Phương thức mã hóa mật khẩu (giả sử bạn đã cài sẵn phương thức này)
+  
     [HttpGet]
     public ActionResult ChangePassword()
     {
@@ -303,45 +448,45 @@ public class UserController : Controller
     }
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult UpdateInfo(KHACHHANG updatedUser)
+    public ActionResult UpdateInfo(KHACHHANG model)
     {
-        if (ModelState.IsValid)
+        var currentUser = Session["TaiKhoan"] as KHACHHANG;
+
+        if (currentUser != null)
         {
-            var currentUser = Session["TaiKhoan"] as KHACHHANG;   
- 
-            if (currentUser != null) 
+            var user = db.KHACHHANGs.FirstOrDefault(u => u.MaKH == currentUser.MaKH);
+            if (user != null)
             {
-                var user = db.KHACHHANGs.FirstOrDefault(u => u.MaKH == currentUser.MaKH); 
-                if (user != null)
+                // Kiểm tra nếu email đã tồn tại trong database
+                if (db.KHACHHANGs.Any(u => u.Email == model.Email && u.MaKH != user.MaKH))
                 {
-                    user.Ten = updatedUser.Ten; 
-                    user.Email = updatedUser.Email; 
-                    user.DiaChi = updatedUser.DiaChi; 
-                    user.SoDienThoai = updatedUser.SoDienThoai; 
-
-                    db.SaveChanges(); 
-                    Session["TaiKhoan"] = user; 
-
-                    ViewBag.ThongBao = "Thông tin đã được cập nhật thành công!"; 
+                    // Nếu email đã tồn tại (trùng email với một tài khoản khác), hiển thị lỗi
+                    ModelState.AddModelError("Email", "Email này đã tồn tại trong hệ thống.");
+                    return View(user);  // Trả về View với dữ liệu và thông báo lỗi
                 }
-                else
-                {
-                    ViewBag.ThongBao = "Người dùng không tồn tại"; 
-                } 
-            }
-            else
-            {
-                ViewBag.ThongBao = "Người dùng chưa đăng nhập"; 
+
+                // Cập nhật thông tin người dùng nếu không có lỗi
+                user.Ten = model.Ten;
+                user.Email = model.Email;
+                user.DiaChi = model.DiaChi;
+                user.SoDienThoai = model.SoDienThoai;
+
+                db.SaveChanges();
+                ViewBag.ThongBao = "Thông tin đã được cập nhật thành công.";
+                return View(user);  // Trả về View với thông báo thành công
             }
         }
-        return View(updatedUser); 
+
+        return RedirectToAction("Login", "User");
     }
+
     public ActionResult LogOut() 
     {
         Session["TaiKhoan"] = null; 
         Session["GioHang"] = null; 
 
         RemoveRefreshTokenCookie();
+       
 
         return RedirectToAction("Login", "User"); 
     } 

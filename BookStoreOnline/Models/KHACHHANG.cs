@@ -32,6 +32,8 @@ namespace BookStoreOnline.Models
         public string RefreshToken { get; set; }
         public Nullable<System.DateTime> TokenExpiration { get; set; }
         public string AccessToken { get; set; }
+        public string ResetPasswordToken { get; set; }
+        public Nullable<System.DateTime> ResetTokenExpiration { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DANHGIA> DANHGIAs { get; set; }

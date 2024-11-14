@@ -237,8 +237,6 @@ namespace BookStoreOnline.Controllers
         [HttpPost]
         public ActionResult InsertOrder(string address)
         {
-           
-
             var cartItems = GetCart();
             if (cartItems == null || !cartItems.Any())
             {
@@ -265,7 +263,6 @@ namespace BookStoreOnline.Controllers
                         NgayDat = DateTime.Now,
                         DiaChi = address,
                         TrangThai = 0, // Not confirmed
-                    /*    PhuongThucThanhToan = paymentMethod.Value,*/
                         TongTien = roundedFinalPrice
                     };
 
@@ -299,9 +296,11 @@ namespace BookStoreOnline.Controllers
                     }
 
                     db.SaveChanges();
+                    // Do not clear cart until PayPal payment is confirmed
                     Session["GioHang"] = null;
                     Session["DiscountAmount"] = null;
                     Session["FinalPrice"] = null;
+
                     transaction.Commit();
 
                     return RedirectToAction("Index", "Order", new { id = customer.MaKH });
@@ -313,6 +312,7 @@ namespace BookStoreOnline.Controllers
                 }
             }
         }
+
 
         [HttpPost]
         public JsonResult ApplyDiscount(string discountCode)
@@ -496,7 +496,5 @@ namespace BookStoreOnline.Controllers
             // Create a payment using a APIContext  
             return this.payment.Create(apiContext);
         }
-
-
     }
 }

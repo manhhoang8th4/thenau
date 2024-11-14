@@ -51,12 +51,12 @@
 
 
             <td>
-                @*<button class="btn btn-success">
-            @Html.ActionLink("Sửa", "Edit", new { id = item.MaNguoiDung }, new { @style = "color:white;" })
+           @*     <button class="btn btn-success">
+            @Html.ActionLink("Sửa", "Edit", new { id = item.MaKH }, new { @style = "color:white;" })
         </button>*@
-                <button style="background-color:black;" class="btn btn-primary">
+                @*<button style="background-color:black;" class="btn btn-primary">
                     @Html.ActionLink("Reset mật khẩu ", "ResetPassword", new { id = item.MaKH }, new { @style = "color:white;" })
-                </button>
+                </button>*@
                 <button class="btn btn-warning">
                     @Html.ActionLink("Vô hiệu hóa", "DisableAccount", new { id = item.MaKH }, new { @style = "color:white;" })
                 </button>
