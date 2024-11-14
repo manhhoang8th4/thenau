@@ -271,7 +271,7 @@
         <h4 style="color:darkred; margin-top:8px">Xem thêm</h4>
     </a>
 </div>
-</div>
+
 
 @helper GetShortTitle(string title)
 {
@@ -320,3 +320,12 @@
         pointer-events: none; /* Không cho phép click khi hết hàng */
     }
 </style>
+<script>
+    // Lưu token trong localStorage
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("refreshToken", refreshToken);
+
+    // Lấy token từ localStorage
+    let accessToken = localStorage.getItem("accessToken");
+    let refreshToken = localStorage.getItem("refreshToken");
+</script>

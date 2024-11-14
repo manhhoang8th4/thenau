@@ -58,9 +58,10 @@ public class UserController : Controller
 
         var cookie = new HttpCookie("accessToken", accessToken)
         {
-            HttpOnly = true, 
-            Secure = Request.IsSecureConnection, 
-            Expires = DateTime.UtcNow.AddHours(1) 
+            HttpOnly = true,
+            Secure = Request.IsSecureConnection,
+            Expires = DateTime.UtcNow.AddHours(1),
+            SameSite = SameSiteMode.Strict
         };
         Response.Cookies.Add(cookie);
     }
@@ -70,7 +71,8 @@ public class UserController : Controller
         {
             HttpOnly = true, // Bảo mật: Cookie chỉ có thể truy cập từ server
             Secure = Request.IsSecureConnection, // Chỉ gửi cookie qua HTTPS nếu có
-            Expires = DateTime.UtcNow.AddDays(7) // Thời hạn của refresh token
+            Expires = DateTime.UtcNow.AddDays(7), // Thời hạn của refresh token
+            SameSite = SameSiteMode.Strict
         };
         Response.Cookies.Add(cookie);
     }
@@ -128,6 +130,9 @@ public class UserController : Controller
 
                 // Tạo token
                 var accessToken = GenerateAccessToken(cus);
+                SetAccessTokenCookie(accessToken);
+                HttpContext.Response.Headers.Add("access_token", accessToken);
+
                 var refreshToken = GenerateRefreshToken();
 
                 // Lưu cả access_token và refresh_token vào cơ sở dữ liệu
@@ -291,7 +296,11 @@ public class UserController : Controller
             mail.IsBodyHtml = true;
 
             // Cấu hình SMTP client
-            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+            var smtpClient = new SmtpClient("smtp.gmail.com", 587)
+            {
+                Credentials = new NetworkCredential(Environment.GetEnvironmentVariable("SMTP_USER"), Environment.GetEnvironmentVariable("SMTP_PASS")),
+                EnableSsl = true
+            };
             smtpClient.Credentials = new NetworkCredential("manhhoang8th4@gmail.com", "jsex khqd lexg wzsq");
             smtpClient.EnableSsl = true; // Kết nối bảo mật
 
@@ -480,14 +489,31 @@ public class UserController : Controller
         return RedirectToAction("Login", "User");
     }
 
-    public ActionResult LogOut() 
+    public ActionResult LogOut()
     {
-        Session["TaiKhoan"] = null; 
-        Session["GioHang"] = null; 
+        // Clear session data (if any)
+        Session.Clear();
+        Session.Abandon();
 
-        RemoveRefreshTokenCookie();
-       
+        if (Request.Cookies["accessToken"] != null)
+        {
+            var accessTokenCookie = new HttpCookie("accessToken")
+            {
+                Expires = DateTime.UtcNow.AddDays(-1) // Set the cookie's expiration to a past date
+            };
+            Response.Cookies.Add(accessTokenCookie);
+        }
 
-        return RedirectToAction("Login", "User"); 
-    } 
+        if (Request.Cookies["refreshToken"] != null)
+        {
+            var refreshTokenCookie = new HttpCookie("refreshToken")
+            {
+                Expires = DateTime.UtcNow.AddDays(-1) // Set the cookie's expiration to a past date
+            };
+            Response.Cookies.Add(refreshTokenCookie);
+        }
+
+        // Optionally, you can redirect the user to the homepage or login page after logout
+        return RedirectToAction("Login", "User");
+    }
 } 
