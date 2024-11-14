@@ -41,9 +41,9 @@ namespace BookStoreOnline.Areas.Admin.Constants
         {
             [Description("Tiền mặt")]
             COD = 1,
-            [Description("Ví điện tử")]
+            [Description("Ngân Hàng")]
             VNPAY = 2,
-            [Description("Ngân hàng")]
+            [Description("Ví điện tử")]
             Bank = 3
         }
 

@@ -89,14 +89,14 @@
                         <td><h4 id="total-price">@String.Format(price, "{0:c0}", ViewBag.TotalPrice)</h4></td>
                     </tr>
                 </table>
-                <button id="codButton" style="margin-left: 150px; width: 200px; background-color: #C92127;color: #fff;/* border: 1px solid; */text-align: center;border-radius: 3px;" class="custom-btn">
+                <button id="codButton" style="margin-left: 125px; width: 255px; background-color: #C92127;color: #fff;/* border: 1px solid; */text-align: center;border-radius: 3px;" class="custom-btn">
                     <p style="margin-top:-4px;">Thanh toán bằng MoMo</p>
                 </button>
                 <div id="paypalButton" style="display: none; ">
                     <a href="/cart/PaymentWithPayPal" class="btn btn-success btn-lg btn-block" id="paypalLink" style="margin-left: 150px; width: 240px; background-color: #C92127; color: #fff; /* border: 1px solid; */ text-align: center; border-radius: 3px; color: rgb(255, 255, 255); height: 46px; ">Thanh toán bằng PayPal</a>
                 </div>
                 <div id="momoButton" style="display: none; ">
-                    <a href="/cart/InsertOrder1" class="btn btn-success btn-lg btn-block" id="paypalLink" style="margin-left: 150px; width: 240px; background-color: #C92127; color: #fff; /* border: 1px solid; */ text-align: center; border-radius: 3px; color: rgb(255, 255, 255); height: 46px; ">Đặt Hàng</a>
+                    <a href="/cart/InsertOrder1" class="btn btn-success btn-lg btn-block" id="momolink" style="margin-left: 150px; width: 240px; background-color: #C92127; color: #fff; /* border: 1px solid; */ text-align: center; border-radius: 3px; color: rgb(255, 255, 255); height: 46px; ">Đặt Hàng</a>
                 </div>
             </div>
         </div>
@@ -229,33 +229,24 @@
     });
 
     // Handle payment method change event
-    paymentMethodSelect.addEventListener("change", function () {
-        var paymentMethod = paymentMethodSelect.value;
-        if (paymentMethod === "cod") {
-            codButton.style.display = "block";
-            paypalButton.style.display = "none";
-        } else if (paymentMethod === "paypal") {
-            codButton.style.display = "none";
-            paypalButton.style.display = "block";
-        } else {
-            codButton.style.display = "none";
-            paypalButton.style.display = "none";
-        }
-    });
-     //MoMo
      paymentMethodSelect.addEventListener("change", function () {
          var paymentMethod = paymentMethodSelect.value;
+
+         // Reset all buttons
+         codButton.style.display = "none";
+         paypalButton.style.display = "none";
+         momoButton.style.display = "none";
+
+         // Show the relevant button based on the selected payment method
          if (paymentMethod === "cod") {
              codButton.style.display = "block";
-             momoButton.style.display = "none";
+         } else if (paymentMethod === "paypal") {
+             paypalButton.style.display = "block";
          } else if (paymentMethod === "momo") {
-             codButton.style.display = "none";
              momoButton.style.display = "block";
-         } else {
-             codButton.style.display = "none";
-             paypa.style.display = "none";
          }
      });
+
     // Ensure payment method button visibility is correct on page load
     paymentMethodSelect.dispatchEvent(new Event("change"));
 });
