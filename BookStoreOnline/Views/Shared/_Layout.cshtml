@@ -34,11 +34,13 @@
         }
 
         .cart-link {
-            margin-left: 10px;
+            margin-left: 133px;
+            margin-bottom:10px;
         }
 
             .cart-link i {
                 color: #c92127;
+               
             }
 
         .navbar-nav a {
@@ -83,10 +85,6 @@
         }
     </style>
 </head>
-
-
-
-
 <body style="background: #F9F5EE">
     <!-- header     -->
     <div style="background-color: #F9F5EE;" class="header">
@@ -124,7 +122,7 @@
                     @if (user == null)
                     {
                         <a style="background-color: #fff; color: #000; font-size: 15px;" href="@Url.Action("SignUp", "User")" class="custom-btn btn-login btn-register">Đăng ký</a>
-                        <a style="background-color: #C92127; font-size: 15px;" href="@Url.Action("Login", "User")" class="custom-btn btn-signup">Đăng nhập</a>
+                        <a style="background-color: #C92127; font-size: 14px;" href="@Url.Action("Login", "User")" class="custom-btn btn-signup">Đăng nhập</a>
                     }
                     else
                     {
