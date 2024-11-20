@@ -27,9 +27,28 @@
             @ViewBag.ThongBao
         </div>
     }
-    <div class="form-group mt-3 text-center">
-        <a href="@Url.Action("ForgotPassword", "User")" style="color: #007bff; text-decoration: underline;">
-            Quên mật khẩu?
+    <div class="">
+        <a href="@Url.Action("ForgotPassword", "User")" class="forgot-password-link">
+            Quên Mật Khẩu
         </a>
     </div>
 </form>
+<style>
+    .forgot-password-link {
+        color: #C92127; /* Màu đỏ cho liên kết */
+        /*text-decoration: underline;*/ /* Đường gạch dưới */
+        font-size: 14px; /* Kích thước font */
+        font-weight: 500; /* Độ đậm của chữ */
+        display: inline-block; /* Đảm bảo liên kết ở dạng inline-block để dễ căn chỉnh */
+        margin-top: 10px; /* Khoảng cách phía trên */
+        text-align: center; /* Căn phải liên kết */
+        margin-left: -9px;
+        width: 100%; /* Đảm bảo căn phải trong phần tử chứa */
+    }
+
+        /* Hiệu ứng hover */
+        .forgot-password-link:hover {
+            color: #b11f1f; /* Màu đỏ đậm khi hover */
+            text-decoration: none; /* Bỏ gạch dưới khi hover */
+        }
+</style>
