@@ -1,4 +1,4 @@
-﻿@{
+﻿﻿@{
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -7,7 +7,7 @@
     ViewBag.Title = "Đăng Nhập";
 }
 
-<form class="ml-lg-auto ml-0 col-12 col-lg-12" style="border-radius: 5px; padding: 20px 20px; background: #fff; margin: 32px 500px; width: 500px;" method="post">
+<form class="ml-lg-auto ml-0 col-12 col-lg-12 form-container" method="post">
     <h2>Đăng Nhập</h2>
     <div class="form-group">
         <label for="Email">Email</label>
@@ -19,7 +19,7 @@
         <input type="password" class="form-control" id="MatKhau" name="MatKhau" required />
     </div>
 
-    <button style="width: 100px; padding: 0px; margin: 0; margin-left: 171px; background-color: #C92127; border:none; color:#fff; border-radius:5px;" type="submit" class="btn-primary custom-btn">Đăng Nhập</button>
+    <button type="submit" class="btn-primary sign-in custom-btn">Đăng Nhập</button>
 
     @if (ViewBag.ThongBao != null)
     {
@@ -27,9 +27,46 @@
             @ViewBag.ThongBao
         </div>
     }
-    <div class="form-group mt-3 text-center">
-        <a href="@Url.Action("ForgotPassword", "User")" style="color: #007bff; text-decoration: underline;">
-            Quên mật khẩu?
+    <div class="">
+        <a href="@Url.Action("ForgotPassword", "User")" class="forgot-password-link">
+            ForgotPassword?
         </a>
     </div>
 </form>
+<style>
+    .forgot-password-link {
+        color: #C92127; /* Màu đỏ cho liên kết */
+        text-decoration: underline; /* Đường gạch dưới */
+        font-size: 14px; /* Kích thước font */
+        font-weight: 500; /* Độ đậm của chữ */
+        display: inline-block; /* Đảm bảo liên kết ở dạng inline-block để dễ căn chỉnh */
+        margin-top: 10px; /* Khoảng cách phía trên */
+        text-align: right; /* Căn phải liên kết */
+        width: 100%; /* Đảm bảo căn phải trong phần tử chứa */
+    }
+
+    .sign-in {
+        width: 100px;
+        padding: 0px;
+        margin: 0;
+        margin-left: 171px;
+        background-color: #C92127;
+        border: none;
+        color: #fff;
+        border-radius: 5px;
+    }
+
+    .form-container {
+        border-radius: 5px;
+        padding: 20px 20px;
+        background: #fff;
+        margin: 32px 500px;
+        width: 500px;
+    }
+
+    /* Hiệu ứng hover */
+    .forgot-password-link:hover {
+        color: #b11f1f; /* Màu đỏ đậm khi hover */
+        text-decoration: none; /* Bỏ gạch dưới khi hover */
+    }
+</style>

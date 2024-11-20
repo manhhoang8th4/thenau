@@ -1,4 +1,4 @@
-﻿
+﻿﻿
 @{
     ViewBag.Title = "SignUp";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,8 +7,31 @@
 @{
     ViewBag.Title = "Đăng Ký";
 }
+<style>
+    .form-container {
+        border-radius: 5px;
+        padding: 20px 20px;
+        background: #fff;
+        margin: 32px 500px;
+        width: 500px;
+    }
 
-<form class="ml-lg-auto ml-0 col-12 col-lg-12" style="border-radius: 5px; padding: 20px 20px; background: #fff; margin: 32px 500px; width: 500px;" method="post">
+    .signup-btn {
+        width: 100px;
+        padding: 0px;
+        margin: 0;
+        margin-left: 171px;
+        background-color: #C92127;
+        border: none;
+        color: #fff;
+        border-radius: 5px;
+    }
+
+    #Email {
+        margin-left: 0;
+    }
+</style>
+<form class="ml-lg-auto ml-0 col-12 col-lg-12 form-container" method="post">
     <h2>Đăng Ký</h2>
     <div class="form-group">
         <label for="Ten">Họ và Tên</label>
@@ -59,13 +82,13 @@
         <input type="tel" class="form-control" id="DiaChi" name="DiaChi" required />
         @if (ViewBag.ThongBao != null)
         {
-            
+
             <div class="alert alert-danger mt-2">
                 @ViewBag.ThongBao
             </div>
         }
     </div>
 
-    <button style=" width: 100px; padding: 0px; margin: 0; margin-left: 171px; background-color: #C92127; border:none; color:#fff; border-radius:5px;" class="btn btn-primary">Đăng Ký</button>
+    <button style="" class="btn btn-primary signup-btn">Đăng Ký</button>
 
 </form>
