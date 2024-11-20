@@ -1,4 +1,4 @@
-﻿@{
+﻿﻿﻿@{
     ViewBag.Title = "Home Page";
 }
 @model IEnumerable<BookStoreOnline.Models.SANPHAM>
@@ -10,17 +10,15 @@
 <link rel="stylesheet" href="~/Content/style.css">
 <script src="~/Scripts/Jav.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-<link href="~/Content/Home.css" rel="stylesheet" />
+
 
 <section style="margin-top:25px;" class="hero col-lg-12 col-12">
     <div style="width:100%;" class="slide-show col-12">
-        <div class="slider-container">
-            <div class="list-images">
-                <img src="~/Images/Cardgame_Slide_T6_840x320.jpg" alt="Slide 1">
-                <img src="~/Images/MangaWeek_T524_MangaFiesta_Slidebanner_840x320.jpg" alt="Slide 2">
-                <img src="~/Images/Silver_0624_Ver2_ZenBooksSlide_840x320.png" alt="Slide 3">
-                <img src="~/Images/Tapvo_SlideBanner_T06.jpg" alt="Slide 4">
-            </div>
+        <div class="list-images">
+            <img src="~/Images/Cardgame_Slide_T6_840x320.jpg" alt="Slide 1">
+            <img src="~/Images/MangaWeek_T524_MangaFiesta_Slidebanner_840x320.jpg" alt="Slide 2">
+            <img src="~/Images/Silver_0624_Ver2_ZenBooksSlide_840x320.png" alt="Slide 3">
+            <img src="~/Images/Tapvo_SlideBanner_T06.jpg" alt="Slide 4">
         </div>
         <div class="btnn">
             <div class="btn-left"><i class="fas fa-angle-left"></i></div>
@@ -28,52 +26,6 @@
         </div>
     </div>
 </section>
-
-<style>
-    .slider-container {
-        overflow: hidden;
-        width: 100%;
-        max-width: 1100px; /* Điều chỉnh kích thước tối đa */
-        margin: 0 auto; /* Căn giữa slide */
-    }
-
-    .list-images {
-        display: flex;
-        transition: transform 0.5s ease-in-out;
-    }
-
-        .list-images img {
-            width: 100%;
-            height: auto;
-            flex-shrink: 0;
-        }
-
-    .btnn {
-        position: relative;
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-        max-width: 1100px;
-        margin: -50px auto 0; /* Điều chỉnh vị trí nút điều hướng */
-    }
-
-    .btn-left,
-    .btn-right {
-        cursor: pointer;
-        background-color: rgba(0, 0, 0, 0.5);
-        color: white;
-        padding: 10px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-        .btn-left:hover,
-        .btn-right:hover {
-            background-color: rgba(0, 0, 0, 0.7);
-        }
-</style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -83,6 +35,7 @@
         const images = document.querySelectorAll('.list-images img');
 
         let index = 0;
+        const imageWidth = listImages.clientWidth;
 
         function moveToSlide(slideIndex) {
             listImages.style.transform = `translateX(-${slideIndex * 100}%)`;
@@ -103,8 +56,56 @@
             btnRight.click();
         }, 5000);
     });
+
 </script>
+
 <style>
+    .container > h3 {
+        text-align: center;
+        margin: 30px auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        background-color: #c92127;
+        border: 2px solid #C92127;
+        font-size: 18px;
+        font-weight: 700;
+        width: 210px;
+        max-width: 100%;
+        height: 40px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.5s;
+    }
+
+    .row-more {
+        justify-content: center;
+        margin: 30px auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #C92127;
+        background-color: #fff;
+        border: 2px solid #C92127;
+        font-size: 14px;
+        font-weight: 700;
+        width: 210px;
+        height: 40px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.5s;
+    }
+
+    .see-more > h4 {
+        color: darkred;
+        margin-top: 8px
+    }
+
+    .card-img-top {
+        height: 300px;
+    }
+
     .progress-bar-container {
         width: 100%;
         background-color: #99999999;
@@ -128,7 +129,7 @@
         position: absolute;
         left: 0;
         top: 0;
-        background-color: #C92127 !important;
+        background-color: #C92127 !important; /* Đảm bảo màu sắc chính xác */
         z-index: 1;
     }
 
@@ -146,11 +147,12 @@
 
     .hero {
         width: 1150px;
-        margin: 25px auto;
+        /* Điều chỉnh kích thước tối đa của khung trình chiếu */
+        margin: 25px auto; /* Canh giữa khung trình chiếu */
         overflow: hidden;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        margin-bottom: 10px;
+        border-radius: 10px; /* Bo tròn góc khung trình chiếu */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ để khung trình chiếu nổi bật hơn */
+        margin-bottom: 10px; /* Thêm khoảng cách dưới khung trình chiếu để gần với nút sách */
     }
 
     .slide-show {
@@ -168,7 +170,7 @@
             width: 100%;
             height: auto;
             flex-shrink: 0;
-            border-radius: 10px;
+            border-radius: 10px; /* Bo tròn góc ảnh */
         }
 
     .btnn {
@@ -193,6 +195,8 @@
             background-color: rgba(0, 0, 0, 0.8);
         }
 
+    }
+
     .rating-stars {
         display: flex;
     }
@@ -205,88 +209,7 @@
             .rating-stars .fa-star.filled {
                 color: #FFD700; /* Màu vàng cho sao đã được đánh giá */
             }
-</style>
 
-<div style="padding:0;" class="col-lg-10 col-12 container body-page">
-    <h3 style="text-align: center; margin: 30px auto; display: flex; align-items: center; justify-content: center; color: #fff; background-color: #c92127; border: 2px solid #C92127; font-size: 18px; font-weight: 700; width: 210px; max-width: 100%; height: 40px; border-radius: 8px; cursor: pointer; transition: all 0.5s;">Sách Hot</h3>
-    <hr />
-    <divstyle ="margin-left:12px" class="row col-lg-12 col-12 ml-1">
-        @foreach (var item in Model)
-        {
-            var soldQuantity = item.SoLuongBan;
-            var totalQuantity = item.SoLuong;
-            var percentageSold = totalQuantity > 0 ? (soldQuantity / (float)totalQuantity) * 100 : 0;
-            var roundedPercentageSold = Math.Round(percentageSold);
-
-            var progressBarColor = percentageSold == 100 ? "#C92127" :
-                                   percentageSold >= 50 ? "#F39C12" :
-                                   "#27AE60";
-            // Tính số sao trung bình
-            var reviews = item.DANHGIAs;
-            var averageRating = reviews.Any() ? reviews.Average(r => r.SoSao) : 0;
-            var roundedRating = Math.Round(averageRating, 1); // Làm tròn đến 1 chữ số thập phân
-
-            <div class="col-lg-3 prod-item">
-                <div class="card" style="width: 18rem;">
-                    <a href="@Url.Action("Index", "ProductDetail", new { id = item.MaSanPham })">
-                        <img class="card-img-top" src="~/Images/@item.Anh" alt="Ảnh sản phẩm">
-                        @if (item.SoLuong == 0)
-                        {
-                            <div class="out-of-stock">Đã hết hàng</div>
-                        }
-                    </a>
-                    <div style="height:250px" class="card-body">
-                        <a href="@Url.Action("Index", "ProductDetail", new { id = item.MaSanPham })" class="title-prod">
-                            <h5 class="card-title">
-                                @Html.Raw(GetShortTitle(item.TenSanPham))
-                            </h5>
-                        </a>
-                        <h5 style="color: darkred;">@String.Format(price, "{0:c0}", item.Gia)</h5>
-                        <p class="card-text rating-card">
-                            <span style="color: black;">(@item.DANHGIAs.Count() đánh giá, @roundedRating sao)</span>
-                            <div class="rating-stars">
-                                @for (int i = 1; i <= 5; i++)
-                                {
-                                    <i class="fas fa-star @(i <= roundedRating ? "filled" : "")"></i>
-                                }
-                            </div>
-                        </p>
-
-                        @if (user != null)
-                        {
-                            <a href="@Url.Action("AddSingleProduct", "Cart", new { id = item.MaSanPham })" class="buy-button" style="background-color: #c92127; text-align: center; margin: 30px auto; display: flex; align-items: center; justify-content: center; color: #fff; border: 2px solid #C92127; font-size: 18px; font-weight: 700; width: 210px; height: 40px; border-radius: 8px; cursor: pointer; transition: all 0.5s;">Mua</a>
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("Login", "User")" class="buy-button" style="background-color: #c92127; text-align: center; margin: 30px auto; display: flex; align-items: center; justify-content: center; color: #fff; border: 2px solid #C92127; font-size: 18px; font-weight: 700; width: 210px; height: 40px; border-radius: 8px; cursor: pointer; transition: all 0.5s;">Mua</a>
-                        }
-                    </div>
-                </div>
-            </div>
-        }
-
-</div>
-<div class="row-more custom-btn" style="justify-content: center; margin: 30px auto; display: flex; align-items: center; justify-content: center; color: #C92127; background-color: #fff; border: 2px solid #C92127; font-size: 14px; font-weight: 700; width: 210px; height: 40px; border-radius: 8px; cursor: pointer; transition: all 0.5s;">
-    <a href="@Url.Action("GetAllBook", "Category")" class="see-more">
-        <h4 style="color:darkred; margin-top:8px">Xem thêm</h4>
-    </a>
-</div>
-
-
-@helper GetShortTitle(string title)
-{
-    var words = title.Split(' ');
-    if (words.Length > 4)
-    {
-        string shortTitle = string.Join(" ", words.Take(4)) + "...";
-        @shortTitle
-    }
-    else
-    {
-        @title
-    }
-}
-<style>
     .rating-stars {
         color: #FFD700; /* Màu vàng cho sao */
     }
@@ -313,6 +236,21 @@
 
     .buy-button {
         opacity: 1; /* Mặc định là không mờ */
+        background-color: #c92127;
+        text-align: center;
+        margin: 30px auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        border: 2px solid #C92127;
+        font-size: 18px;
+        font-weight: 700;
+        width: 210px;
+        height: 40px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.5s;
     }
 
     .card:has(.out-of-stock) .buy-button {
@@ -320,12 +258,88 @@
         pointer-events: none; /* Không cho phép click khi hết hàng */
     }
 </style>
-<script>
-    // Lưu token trong localStorage
-    localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("refreshToken", refreshToken);
 
-    // Lấy token từ localStorage
-    let accessToken = localStorage.getItem("accessToken");
-    let refreshToken = localStorage.getItem("refreshToken");
-</script>
+<div style="padding:0;" class=" col-lg-10 col-12 container body-page">
+    <h3>Sách Hot</h3>
+    <hr />
+    <div style="margin-left:12px" class="row col-lg-12 col-12 ml-1">
+        @foreach (var item in Model)
+        {
+            var soldQuantity = item.SoLuongBan;
+            var totalQuantity = item.SoLuong;
+            var percentageSold = totalQuantity > 0 ? (soldQuantity / (float)totalQuantity) * 100 : 0;
+            var roundedPercentageSold = Math.Round(percentageSold);
+
+            var progressBarColor = percentageSold == 100 ? "#C92127" :
+                                   percentageSold >= 50 ? "#F39C12" :
+                                   "#27AE60"; // Điều chỉnh màu sắc theo nhu cầu
+
+            // Tính số sao trung bình
+            var reviews = item.DANHGIAs;
+            var averageRating = reviews.Any() ? reviews.Average(r => r.SoSao) : 0;
+            var roundedRating = Math.Round(averageRating, 1); // Làm tròn đến 1 chữ số thập phân
+
+            <div class="col-lg-3 col-12 prod-item">
+                <div class="card col-lg-12 col-12">
+                    <a href="@Url.Action("Index", "ProductDetail", new { id = item.MaSanPham })">
+                        <img class="card-img-top " src="~/Images/@item.Anh" alt="Ảnh sản phẩm">
+                        @if (item.SoLuong == 0)
+                        {
+                            <div class="out-of-stock">Đã hết hàng</div>
+                        }
+                    </a>
+                    <div style="height:250px" class="card-body">
+                        <a href="@Url.Action("Index", "ProductDetail", new { id = item.MaSanPham })" class="title-prod">
+                            <h5 class="card-title">
+                                @Html.Raw(GetShortTitle(item.TenSanPham))
+                            </h5>
+                        </a>
+                        <h5 style="color: darkred;">@String.Format(price, "{0:c0}", item.Gia)</h5>
+                        <p class="card-text rating-card">
+                            <!-- Hiển thị số lượng đánh giá và sao đánh giá -->
+                            <span style="color: black;">(@item.DANHGIAs.Count() đánh giá, @roundedRating sao)</span>
+                            <div class="rating-stars">
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <i class="fas fa-star @(i <= roundedRating ? "filled" : "")"></i>
+                                }
+                            </div>
+                        </p>
+                        <!-- Hiển thị số lượng đã bán với thanh tiến độ -->
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="width: @roundedPercentageSold%; background-color: @progressBarColor; border-radius: 30px;"></div>
+                            <div class="sold-text">Đã bán @soldQuantity/@totalQuantity</div>
+                        </div>
+                        @if (user != null)
+                        {
+                            <a href="@Url.Action("AddSingleProduct", "Cart", new { id = item.MaSanPham })" class="buy-button">Mua</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Login", "User")" class="buy-button">Mua</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="row-more custom-btn" ">
+        <a href="@Url.Action("GetAllBook", "Category")" class="see-more">
+            <h4>Xem thêm</h4>
+        </a>
+    </div>
+</div>
+
+@helper GetShortTitle(string title)
+{
+    var words = title.Split(' ');
+    if (words.Length > 4)
+    {
+        string shortTitle = string.Join(" ", words.Take(4)) + "...";
+        @shortTitle
+    }
+    else
+    {
+        @title
+    }
+}
