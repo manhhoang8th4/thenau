@@ -1,4 +1,4 @@
-﻿@{
+﻿﻿@{
     ViewBag.Title = "GetAllBook";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -60,11 +60,11 @@
 
                                 @if (user != null)
                                 {
-                                    <a href="@Url.Action("AddSingleProduct", "Cart", new { id = item.MaSanPham })" class="custom-btn" style="text-align: center; margin: 30px auto; display: flex; display: -webkit-box; display: -ms-flexbox; display: -webkit-flex; -ms-flex-align: center; -webkit-align-items: center; align-items: center; -webkit-justify-content: center; justify-content: center; color: #fff; background-color: #c92127; border: 2px solid #C92127; font-size: 18px; font-weight: 700; width: 210px; max-width: 100%; height: 40px; max-height: 100%; border-radius: 8px; -moz-border-radius: 8px; -webkit-border-radius: 8px; cursor: pointer; -webkit-user-drag: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -o-user-select: none; user-select: none; transition: all 0.5s;">Mua</a>
+                                    <a href="@Url.Action("AddSingleProduct", "Cart", new { id = item.MaSanPham })" class="custom-btn buy-btn">Mua</a>
                                 }
                                 else
                                 {
-                                    <a href="@Url.Action("Login", "User")" class="custom-btn" style="text-align: center; margin: 30px auto; display: flex; display: -webkit-box; display: -ms-flexbox; display: -webkit-flex; -ms-flex-align: center; -webkit-align-items: center; align-items: center; -webkit-justify-content: center; justify-content: center; color: #fff; background-color: #c92127; border: 2px solid #C92127; font-size: 18px; font-weight: 700; width: 210px; max-width: 100%; height: 40px; max-height: 100%; border-radius: 8px; -moz-border-radius: 8px; -webkit-border-radius: 8px; cursor: pointer; -webkit-user-drag: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -o-user-select: none; user-select: none; transition: all 0.5s;">Mua</a>
+                                    <a href="@Url.Action("Login", "User")" class="custom-btn buy-btn">Mua</a>
                                 }
                                 @*   <a href="@Url.Action("Index", "ProductDetail", new { id = item.MaSanPham })" class="see-detail-prod">
                                         <i class="bi bi-eye"></i>
@@ -133,5 +133,34 @@
 
     .card-img-top {
         height: 300px;
+    }
+
+    .buy-btn {
+        text-align: center;
+        margin: 30px auto;
+        display: flex;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        -ms-flex-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        color: #fff;
+        background-color: #c92127;
+        border: 2px solid #C92127;
+        font-size: 18px;
+        font-weight: 700;
+        width: 210px;
+        max-width: 100%;
+        height: 40px;
+        max-height: 100%;
+        border-radius: 8px;
+        -moz-border-radius: 8px;
+        -webkit-border-radius: 8px;
+        cursor: pointer;
+        user-select: none;
+        transition: all 0.5s;
     }
 </style>

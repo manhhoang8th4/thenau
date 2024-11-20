@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using BookStoreOnline.Models; // Đảm bảo bạn đã thêm namespace cho mô hình dữ liệu của bạn
+using static BookStoreOnline.Areas.Admin.Constants.Constants;
 
 namespace BookStoreOnline.Areas.Admin.Controllers
 {
     public class Home_PageController : Controller
     {
         private NhaSachEntities3 db = new NhaSachEntities3();
+        private string status;
 
         // GET: Admin/HomePage
         public ActionResult Index()
@@ -22,13 +25,26 @@ namespace BookStoreOnline.Areas.Admin.Controllers
             ViewBag.TongDonHang = db.DONHANGs.Count(); // Tổng số đơn hàng
             ViewBag.TongLoai = db.LOAIs.Count();//
                                                 // Lấy danh sách đơn hàng từ cơ sở dữ liệu
-            var donHangs = db.DONHANGs
-                .OrderBy(d => d.MaDonHang) // Sắp xếp theo ID đơn hàng
-                .Take(5) // Lấy 5 đơn hàng đầu tiên
-                .ToList();
+            List<DONHANG> donHang;
+            if (!string.IsNullOrEmpty(status))
+            {
+                if (Enum.TryParse(status, out StatusOrder parsedStatusOrder))
+                {
+                    int parsedStatusOrderInt = (int)parsedStatusOrder;
+                    donHang = db.DONHANGs.Where(x => x.TrangThai == parsedStatusOrderInt).ToList();
+                }
+                else
+                {
+                    donHang = db.DONHANGs.ToList();  // Lấy tất cả đơn hàng nếu trạng thái không hợp lệ
+                }
+            }
+            else
+            {
+                donHang = db.DONHANGs.ToList();  // Lấy tất cả đơn hàng nếu không có trạng thái
+            }
 
-            // Gửi danh sách đơn hàng tới View
-            ViewBag.DonHangs = donHangs;
+            // Truyền vào ViewBag
+            ViewBag.DonHangs = donHang;
 
             return View();
         }

@@ -13,6 +13,7 @@
     <div class="table-responsive">
         <table class="table table-striped text-center">
             <tr>
+                <th>Mã đơn hàng</th>
                 <th>Khách hàng</th>
                 <th>Ngày đặt</th>
                 <th>Địa chỉ giao hàng</th>
@@ -25,6 +26,7 @@
             @foreach (var item in Model)
             {
                 <tr>
+                    <td>@item.MaDonHang</td>
                     <td>@item.KHACHHANG.Ten</td>
                     <td>@String.Format("{0:dd/MM/yyyy}", item.NgayDat)</td>
                     <td>@item.DiaChi</td>
@@ -44,7 +46,7 @@
                     <td>@phuongThucThanhToan</td>
                     <td>
                         <a style="color:#fff; background-color:#000;border:none" href="@Url.Action("Details/" + item.MaDonHang, "OrdersAdmin")" class="btn btn-info">Xem chi tiết</a>
-                    @*    <a style="color:#fff; background-color:#000;border:none" href="@Url.Action("Delete/" + item.MaDonHang, "OrdersAdmin")" class="btn btn-info">Xem chi tiết</a>*@
+                        @**@   @* <a style="color:#fff; background-color:#000;border:none" href="@Url.Action("Delete/" + item.MaDonHang, "OrdersAdmin")" class="btn btn-info">Xem chi tiết</a>*@
                     </td>
                 </tr>
 

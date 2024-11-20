@@ -4,10 +4,10 @@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
-  
+
     var admin = Session["TaiKhoan"] as BookStoreOnline.Models.NHANVIEN;
-   
-    if (admin == null ) 
+
+    if (admin == null)
     {
         Response.Redirect("~/Home/Index");
     }
@@ -99,26 +99,60 @@
                         <div class="tile">
                             <h3 class="tile-title">Tình trạng đơn hàng</h3>
                             <div>
-                                <table class="table table-bordered col-md-12 ">
+                                <table class="table table-bordered col-md-12">
                                     <thead>
                                         <tr>
-                                            <th>ID đơn hàng</th>
+                                            <th>Mã đơn hàng</th> <!-- Cột Mã Đơn Hàng -->
                                             <th>Tên khách hàng</th>
                                             <th>Tổng tiền</th>
                                             <th>Trạng thái</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        @foreach (var order in ViewBag.DonHangs as List<BookStoreOnline.Models.DONHANG>)
+                                        {
+                                            <tr>
+                                                <td>@order.MaDonHang</td> <!-- Hiển thị mã đơn hàng -->
+                                                <td>@order.KHACHHANG.Ten</td>
+                                                <td>@order.TongTien.ToString("C", price)</td>
+                                                <td>
+                                                    @switch (order.TrangThai)
+                                                    {
+                                                        case 0:
+                                                            @:Đang xử lý
+                                                            break;
+                                                        case 1:
+                                                            @:Đã xác nhận
+                                                            break;
+                                                        case 2:
+                                                            @:Đang giao hàng
+                                                            break;
+                                                        case 3:
+                                                            @:Đã nhận hàng
+                                                            break;
+                                                        case 4:
+                                                            @:Đã hủy đơn
+                                                            break;
+
+                                                    }
+                                                </td>
+
+                                            </tr>
+                                        }
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
-                    <!-- / col-12 -->
-                    <!-- col-12 -->
-                    <!--END right-->
+
                 </div>
             </div>
+        </div>
+        <!-- / col-12 -->
+        <!-- col-12 -->
+        <!--END right-->
+        </div>
+        </div>
         </div>
     </main>
     <script src="~/admin/js_doc/jquery-3.2.1.min..js"></script>
@@ -129,7 +163,7 @@
     <script src="~/admin/js_doc/plugin/pace.min.js"></script>
     <script type="text/javascript" src="~/admin/plugin/chart.js"></script>
     <script type="text/javascript">
-      
+
 
         var ctxl = document.getElementById("myLineChart").getContext("2d");
         var myLineChart = new Chart(ctxl, {

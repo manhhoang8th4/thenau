@@ -11,9 +11,9 @@ namespace BookStoreOnline.Controllers
         private NhaSachEntities3 db = new NhaSachEntities3();
 
         // GET: Order
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
-            var orders = db.DONHANGs.ToList();
+            var orders = db.DONHANGs.Where(o => o.ID == id).ToList();
             return View(orders);
         }
 

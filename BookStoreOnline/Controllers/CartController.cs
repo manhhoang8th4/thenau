@@ -237,7 +237,7 @@ namespace BookStoreOnline.Controllers
             return Json(new { success = true });
         }
         [HttpPost]
-        public ActionResult InsertOrder(string address)
+        public ActionResult InsertOrder(string address, string paymentMethod1)
         {
             var cartItems = GetCart();
             if (cartItems == null || !cartItems.Any())
@@ -255,6 +255,20 @@ namespace BookStoreOnline.Controllers
             var finalPrice = Session["FinalPrice"] as decimal? ?? GetTotalPrice();
             var roundedFinalPrice = (int)Math.Round(finalPrice);
 
+            // Xử lý phương thức thanh toán
+            int trangThaiThanhToan = 0;  // Mặc định là chưa thanh toán (COD)
+            int phuongThucThanhToan = 0; // Mặc định là COD
+            if (paymentMethod1 == "paypal")
+            {
+                phuongThucThanhToan = 2;
+                trangThaiThanhToan = 1;
+            }
+            else if (paymentMethod1 == "cod")
+            {
+                phuongThucThanhToan = 3;
+                trangThaiThanhToan = 1;
+            }
+
             using (var transaction = db.Database.BeginTransaction())
             {
                 try
@@ -265,9 +279,10 @@ namespace BookStoreOnline.Controllers
                         NgayDat = DateTime.Now,
                         DiaChi = address,
                         TrangThai = 0, // Not confirmed
+                        TrangThaiThanhToan = trangThaiThanhToan, // Cập nhật trạng thái thanh toán
+                        PhuongThucThanhToan = phuongThucThanhToan,  // Lưu phương thức thanh toán
                         TongTien = roundedFinalPrice
                     };
-              
 
                     db.DONHANGs.Add(order);
                     db.SaveChanges();
@@ -315,7 +330,9 @@ namespace BookStoreOnline.Controllers
                 }
             }
         }
-        public ActionResult InsertOrder1(string address)
+
+        [HttpPost]
+        public ActionResult InsertOrder1(string address, string paymentMethod1)
         {
             var cartItems = GetCart();
             if (cartItems == null || !cartItems.Any())
@@ -333,6 +350,20 @@ namespace BookStoreOnline.Controllers
             var finalPrice = Session["FinalPrice"] as decimal? ?? GetTotalPrice();
             var roundedFinalPrice = (int)Math.Round(finalPrice);
 
+            // Xử lý phương thức thanh toán
+            int trangThaiThanhToan = 0;  // Mặc định là chưa thanh toán (COD)
+            int phuongThucThanhToan = 0; // Mặc định là COD
+            if (paymentMethod1 == "paypal")
+            {
+                phuongThucThanhToan = 2;  // Ngân hàng
+                trangThaiThanhToan = 1;   // Đã thanh toán
+            }
+            else if (paymentMethod1 == "cod") //tienmat
+            {
+                phuongThucThanhToan = 1;
+                trangThaiThanhToan = 1;
+            }
+
             using (var transaction = db.Database.BeginTransaction())
             {
                 try
@@ -343,6 +374,8 @@ namespace BookStoreOnline.Controllers
                         NgayDat = DateTime.Now,
                         DiaChi = address,
                         TrangThai = 0, // Not confirmed
+                        TrangThaiThanhToan = trangThaiThanhToan, // Cập nhật trạng thái thanh toán
+                        PhuongThucThanhToan = phuongThucThanhToan,  // Lưu phương thức thanh toán
                         TongTien = roundedFinalPrice
                     };
 
@@ -383,7 +416,7 @@ namespace BookStoreOnline.Controllers
 
                     transaction.Commit();
 
-                    return RedirectToAction("Index","Order");
+                    return RedirectToAction("momo", "Cart", new { id = order.MaDonHang });
                 }
                 catch (Exception ex)
                 {

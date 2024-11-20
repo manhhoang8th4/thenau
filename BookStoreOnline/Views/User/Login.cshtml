@@ -1,4 +1,4 @@
-﻿@{
+﻿﻿@{
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -7,7 +7,7 @@
     ViewBag.Title = "Đăng Nhập";
 }
 
-<form class="ml-lg-auto ml-0 col-12 col-lg-12" style="border-radius: 5px; padding: 20px 20px; background: #fff; margin: 32px 500px; width: 500px;" method="post">
+<form class="ml-lg-auto ml-0 col-12 col-lg-12 form-container" method="post">
     <h2>Đăng Nhập</h2>
     <div class="form-group">
         <label for="Email">Email</label>
@@ -19,7 +19,7 @@
         <input type="password" class="form-control" id="MatKhau" name="MatKhau" required />
     </div>
 
-    <button style="width: 100px; padding: 0px; margin: 0; margin-left: 171px; background-color: #C92127; border:none; color:#fff; border-radius:5px;" type="submit" class="btn-primary custom-btn">Đăng Nhập</button>
+    <button type="submit" class="btn-primary sign-in custom-btn">Đăng Nhập</button>
 
     @if (ViewBag.ThongBao != null)
     {

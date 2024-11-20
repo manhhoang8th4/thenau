@@ -60,7 +60,7 @@
                     <td>
                         @if (item.TrangThai == (int)Constants.StatusOrder.NoInform)
                         {
-                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#cancelOrderModal" data-orderid="@item.MaDonHang">
+                            <button type="button" class="btn-danger" data-toggle="modal" data-target="#cancelOrderModal" data-orderid="@item.MaDonHang">
                                 Hủy
                             </button>
                         }
@@ -226,5 +226,15 @@
         button.danger:hover {
             background-color: #c82333;
         }
+
+    .btn-danger {
+        width: 70%;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-weight: 400;
+        cursor: pointer;
+        background-color: #dc3545;
+        color: #fff;
+    }
 
 </style>

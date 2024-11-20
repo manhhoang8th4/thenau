@@ -53,7 +53,7 @@
     @using (Html.BeginForm("InsertOrder", "Cart", FormMethod.Post, new { @class = "checkout-form" }))
     {
         <div class="row infor-order">
-            <div style=" margin-top: -20px;" class="col-lg-6">
+            <div style="margin-top: -20px;" class="col-lg-6">
                 <h5 style="color:#000;" class="address-title">Địa chỉ</h5>
                 <textarea style="border:1px solid #ccc;" name="address" placeholder="Nhập địa chỉ giao hàng" rows="4" required></textarea>
                 <h5 style="color:#000;" class="payment-method-title">Phương thức thanh toán</h5>
@@ -63,21 +63,18 @@
                     <option value="paypal">Chuyển khoản ngân hàng</option>
                     <option value="momo">Thanh toán khi nhận hàng (COD)</option>
                 </select>
-
-                <!-- Thêm vào trong phần <div class="col-lg-6"> sau phần phương thức thanh toán -->
-
-
             </div>
-            <div class="col-lg-6">
 
+            <div class="col-lg-6">
                 <h5 class="discount-code-title">Mã khuyến mãi</h5>
                 <input style="color: #000; padding: 10px 5px; border-radius: 5px; background-color: white; border: 1px solid #ccc;"
                        type="text" name="discountCode" placeholder="Nhập mã khuyến mãi" />
 
-                <div style=" margin-top: 10px; border: 1px solid #ccc; justify-content: space-between; display: flex; padding: 10px;" class="discount-details">
+                <div class="discount-details">
                     <h5>Giảm giá</h5>
                     <p id="discount-amount">0 đ</p>
                 </div>
+
                 <table class="table">
                     <tr>
                         <td>Tổng số lượng sản phẩm</td>
@@ -89,14 +86,17 @@
                         <td><h4 id="total-price">@String.Format(price, "{0:c0}", ViewBag.TotalPrice)</h4></td>
                     </tr>
                 </table>
-                <button id="codButton" style="margin-left: 150px; width: 200px; background-color: #C92127;color: #fff;/* border: 1px solid; */text-align: center;border-radius: 3px;" class="custom-btn">
-                    <p style="margin-top:-4px;">Thanh toán bằng MoMo</p>
-                </button>
-                <div id="paypalButton" style="display: none; ">
-                    <a href="/cart/PaymentWithPayPal" class="btn btn-success btn-lg btn-block" id="paypalLink" style="margin-left: 150px; width: 240px; background-color: #C92127; color: #fff; /* border: 1px solid; */ text-align: center; border-radius: 3px; color: rgb(255, 255, 255); height: 46px; ">Thanh toán bằng PayPal</a>
-                </div>
-                <div id="momoButton" style="display: none; ">
-                    <a href="/cart/InsertOrder1" class="btn btn-success btn-lg btn-block" id="paypalLink" style="margin-left: 150px; width: 240px; background-color: #C92127; color: #fff; /* border: 1px solid; */ text-align: center; border-radius: 3px; color: rgb(255, 255, 255); height: 46px; ">Đặt Hàng</a>
+
+                <div class="payment-buttons">
+                    <div>
+                        <button id="codButton" class="custom-btn">Thanh toán bằng MoMo</button>
+                    </div>
+                    <div id="paypalButton">
+                        <a href="/cart/PaymentWithPayPal" id="paypalLink" class="custom-btn">Thanh toán bằng PayPal</a>
+                    </div>
+                    <div id="momoButton">
+                        <a href="/cart/InsertOrder1" id="momoLink" class="custom-btn">Đặt Hàng</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -229,33 +229,24 @@
     });
 
     // Handle payment method change event
-    paymentMethodSelect.addEventListener("change", function () {
-        var paymentMethod = paymentMethodSelect.value;
-        if (paymentMethod === "cod") {
-            codButton.style.display = "block";
-            paypalButton.style.display = "none";
-        } else if (paymentMethod === "paypal") {
-            codButton.style.display = "none";
-            paypalButton.style.display = "block";
-        } else {
-            codButton.style.display = "none";
-            paypalButton.style.display = "none";
-        }
-    });
-     //MoMo
      paymentMethodSelect.addEventListener("change", function () {
          var paymentMethod = paymentMethodSelect.value;
+
+         // Reset all buttons
+         codButton.style.display = "none";
+         paypalButton.style.display = "none";
+         momoButton.style.display = "none";
+
+         // Show the relevant button based on the selected payment method
          if (paymentMethod === "cod") {
              codButton.style.display = "block";
-             momoButton.style.display = "none";
+         } else if (paymentMethod === "paypal") {
+             paypalButton.style.display = "block";
          } else if (paymentMethod === "momo") {
-             codButton.style.display = "none";
              momoButton.style.display = "block";
-         } else {
-             codButton.style.display = "none";
-             paypa.style.display = "none";
          }
      });
+
     // Ensure payment method button visibility is correct on page load
     paymentMethodSelect.dispatchEvent(new Event("change"));
 });
@@ -396,4 +387,89 @@
         .custom-btn.btn-14:hover {
             background-color: #0056b3;
         }
+    /* Tao làm */
+    .custom-btn {
+        padding: 12px 20px;
+        background-color: #C92127;
+        color: #fff;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        border-radius: 30px; /* Bo góc nhẹ */
+        border: 1px solid #C92127; /* Viền cùng màu */
+        transition: background-color 0.3s ease, transform 0.3s ease; /* Chuyển động mượt mà */
+        text-transform: uppercase; /* Chữ in hoa */
+        width: 100%; /* Nút chiếm toàn bộ chiều rộng */
+        max-width: 350px; /* Giới hạn chiều rộng tối đa */
+        margin-left: 100px; /* Đẩy nút sang bên phải */
+        margin-right: 0; /* Đảm bảo không có khoảng cách bên phải */
+    }
+
+        /* Hiệu ứng khi hover */
+        .custom-btn:hover {
+            background-color: #A61C1F; /* Màu nền tối hơn khi hover */
+            border-color: #A61C1F; /* Viền tối hơn khi hover */
+            transform: scale(1.05); /* Phóng to nhẹ khi hover */
+        }
+
+        /* Hiệu ứng khi nhấn nút */
+        .custom-btn:active {
+            background-color: #93161A; /* Màu nền đậm hơn khi nhấn */
+            transform: scale(1); /* Quay lại kích thước ban đầu */
+        }
+
+        /* Hiệu ứng focus */
+        .custom-btn:focus {
+            outline: none; /* Loại bỏ viền mặc định */
+            box-shadow: 0 0 5px rgba(201, 33, 39, 0.6); /* Thêm viền sáng khi focus */
+        }
+
+    .discount-code-title {
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 18px; /* Tăng cỡ chữ để dễ đọc hơn */
+    }
+
+    input[name="discountCode"] {
+        color: #000;
+        padding: 10px 10px; /* Thêm khoảng cách hai bên */
+        border-radius: 5px;
+        background-color: #f7f7f7; /* Màu nền sáng để nổi bật */
+        border: 1px solid #ccc;
+        width: 100%; /* Để input chiếm toàn bộ chiều rộng */
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Hiệu ứng chìm */
+        transition: all 0.3s ease; /* Chuyển động mượt */
+    }
+
+        input[name="discountCode"]:focus {
+            border-color: #C92127; /* Đổi màu viền khi focus */
+            outline: none;
+            box-shadow: 0 0 5px rgba(201, 33, 39, 0.5); /* Hiệu ứng viền sáng */
+        }
+
+    .discount-details {
+        margin-top: 15px;
+        padding: 12px 15px;
+        border: 1px solid #ccc;
+        border-radius: 8px; /* Bo góc nhẹ */
+        display: flex;
+        justify-content: space-between; /* Canh đều nội dung */
+        background-color: #f9f9f9; /* Màu nền sáng */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng */
+    }
+
+        .discount-details h5 {
+            margin: 0;
+            font-size: 16px; /* Cỡ chữ nhỏ hơn cho phù hợp */
+            color: #333;
+        }
+
+    #discount-amount {
+        font-size: 16px;
+        font-weight: bold;
+        color: #C92127; /* Màu chữ nổi bật */
+    }
+
+    /* Tao làm */
 </style>
