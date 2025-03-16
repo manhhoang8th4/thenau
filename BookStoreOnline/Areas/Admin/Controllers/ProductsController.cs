@@ -8,6 +8,8 @@ using System.Web;
 using System.IO;
 using System.Web.Mvc;
 using BookStoreOnline.Models;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 
 namespace BookStoreOnline.Areas.Admin.Controllers
 {
@@ -15,9 +17,22 @@ namespace BookStoreOnline.Areas.Admin.Controllers
     {
         private NhaSachEntities3 db = new NhaSachEntities3();
 
+        // Cấu hình Cloudinary
+        private Cloudinary cloudinary;
+
+        public ProductsController()
+        {
+            var account = new Account(
+                "dfela1rxa",    // Thay bằng Cloud Name của bạn
+                "946317742558943",       // Thay bằng API Key của bạn
+                "0bILZnhAynfc8n4loa5yrdaiCWw"     // Thay bằng API Secret của bạn
+            );
+            cloudinary = new Cloudinary(account);
+        }
+
+        // GET: Admin/Products
         public ActionResult Index(string searchString)
         {
-            // Khai báo sanPham dưới dạng IQueryable
             IQueryable<SANPHAM> sanPham = db.SANPHAMs.OrderByDescending(p => p.MaSanPham);
 
             if (!String.IsNullOrEmpty(searchString))
@@ -25,8 +40,7 @@ namespace BookStoreOnline.Areas.Admin.Controllers
                 sanPham = sanPham.Where(s => s.TenSanPham.Contains(searchString));
             }
 
-            return View(sanPham.ToList()); // Chuyển đổi thành List khi truyền vào View
-
+            return View(sanPham.ToList());
         }
 
         // GET: Admin/Products/Details/5
@@ -58,12 +72,18 @@ namespace BookStoreOnline.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (imageBook != null)
+                if (imageBook != null && imageBook.ContentLength > 0)
                 {
-                    var fileName = Path.GetFileName(imageBook.FileName);
-                    var path = Path.Combine(Server.MapPath("~/Images"), fileName);
-                    sanPham.Anh = fileName;
-                    imageBook.SaveAs(path);
+                    // Upload ảnh lên Cloudinary
+                    var uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription(imageBook.FileName, imageBook.InputStream),
+                        PublicId = "bookstore/" + Path.GetFileNameWithoutExtension(imageBook.FileName),
+                        Overwrite = true
+                    };
+
+                    var uploadResult = cloudinary.Upload(uploadParams);
+                    sanPham.Anh = uploadResult.SecureUrl.ToString(); // Lưu URL ảnh từ Cloudinary vào database
                 }
 
                 db.SANPHAMs.Add(sanPham);
@@ -71,10 +91,10 @@ namespace BookStoreOnline.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            // Khi có lỗi, nạp lại danh sách thể loại
             ViewBag.LoaiSP = new SelectList(db.LOAIs, "MaLoai", "TenLoai", sanPham.MaLoai);
             return View(sanPham);
         }
+
         // GET: Admin/Products/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -89,34 +109,37 @@ namespace BookStoreOnline.Areas.Admin.Controllers
                 return HttpNotFound();
             }
 
-            // Nạp danh sách thể loại vào ViewBag
             ViewBag.LoaiSP = new SelectList(db.LOAIs, "MaLoai", "TenLoai", sanPham.MaLoai);
-
             return View(sanPham);
         }
 
         // POST: Admin/Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "MaSanPham,TenSanPham,Gia,MoTa,TacGia,Anh,MaLoai,SoLuong")] SANPHAM sanPham, HttpPostedFileBase imageBook)
         {
             if (ModelState.IsValid)
             {
-                if (imageBook != null)
+                if (imageBook != null && imageBook.ContentLength > 0)
                 {
-                    var fileName = Path.GetFileName(imageBook.FileName);
-                    var path = Path.Combine(Server.MapPath("~/Images"), fileName);
-                    sanPham.Anh = fileName;
-                    imageBook.SaveAs(path);
+                    // Upload ảnh mới lên Cloudinary
+                    var uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription(imageBook.FileName, imageBook.InputStream),
+                        PublicId = "bookstore/" + Path.GetFileNameWithoutExtension(imageBook.FileName),
+                        Overwrite = true
+                    };
+
+                    var uploadResult = cloudinary.Upload(uploadParams);
+                    sanPham.Anh = uploadResult.SecureUrl.ToString(); // Cập nhật URL ảnh mới vào database
                 }
 
                 db.Entry(sanPham).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CategoryID = new SelectList(db.LOAIs, "CategoryID", "CategoryName", sanPham.MaLoai);
+
+            ViewBag.LoaiSP = new SelectList(db.LOAIs, "MaLoai", "TenLoai", sanPham.MaLoai);
             return View(sanPham);
         }
 
@@ -140,9 +163,22 @@ namespace BookStoreOnline.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            SANPHAM product = db.SANPHAMs.Find(id);
-            db.SANPHAMs.Remove(product);
-            db.SaveChanges();
+            SANPHAM sanPham = db.SANPHAMs.Find(id);
+
+            if (sanPham != null)
+            {
+                // Xóa ảnh trên Cloudinary (nếu có)
+                if (!string.IsNullOrEmpty(sanPham.Anh))
+                {
+                    var publicId = Path.GetFileNameWithoutExtension(new Uri(sanPham.Anh).AbsolutePath);
+                    var deletionParams = new DeletionParams("bookstore/" + publicId);
+                    cloudinary.Destroy(deletionParams);
+                }
+
+                db.SANPHAMs.Remove(sanPham);
+                db.SaveChanges();
+            }
+
             return RedirectToAction("Index");
         }
 

@@ -9,7 +9,7 @@
     <!-- Thông tin sản phẩm -->
     <div class="row">
         <div class="col-lg-5">
-            <img src="~/Images/@Model.Anh" style="width:100%" alt="@Model.TenSanPham">
+            <img src="@Model.Anh" style="width:100%" alt="@Model.TenSanPham">
         </div>
         <div class="col-lg-4">
             <h3>@Model.TenSanPham</h3>
@@ -112,7 +112,7 @@
                     <div class="col-lg-4 prod-item">
                         <div class="card" style="width: 18rem;">
                             <a href="@Url.Action("Index", "ProductDetail", new { id = item.MaSanPham })">
-                                <img class="card-img-top" src="~/Images/@item.Anh" alt="@item.TenSanPham">
+                                <img class="card-img-top" src="@item.Anh" alt="@item.TenSanPham">
                             </a>
                             <div class="card-body">
                                 <a href="@Url.Action("Index", "ProductDetail", new { id = item.MaSanPham })" class="title-prod">

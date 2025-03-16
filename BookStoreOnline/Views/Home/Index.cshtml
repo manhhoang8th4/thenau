@@ -282,7 +282,7 @@
             <div class="col-lg-3 col-12 prod-item">
                 <div class="card col-lg-12 col-12">
                     <a href="@Url.Action("Index", "ProductDetail", new { id = item.MaSanPham })">
-                        <img class="card-img-top " src="~/Images/@item.Anh" alt="Ảnh sản phẩm">
+                        <img class="card-img-top " src="@item.Anh" alt="Ảnh sản phẩm">
                         @if (item.SoLuong == 0)
                         {
                             <div class="out-of-stock">Đã hết hàng</div>
