@@ -1,5 +1,7 @@
 ﻿﻿﻿﻿@{
-
+    ViewBag.Title = "Nhà sách Online - Sách hay, giá rẻ";
+    ViewBag.MetaDescription = "Mua sách online chất lượng cao, giá tốt tại BookStoreOnline. Đặt hàng ngay!";
+    ViewBag.MetaKeywords = "mua sách online, nhà sách, sách hay, sách giá rẻ";
     var user = Session["TaiKhoan"] as BookStoreOnline.Models.KHACHHANG;
 }
 <!DOCTYPE html>
@@ -8,7 +10,30 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAHASA</title>
+    <meta name="google-site-verification" content="jjyrKvLVNkAJrkhKMP8f3KkfobR2nMQ2PD07LZCQbZI" />
+    <title>@ViewBag.Title</title>
+    <meta name="description" content="@ViewBag.MetaDescription">
+    <meta name="keywords" content="@ViewBag.MetaKeywords">
+    <title>Nhà sách Online - Mua sách hay, giá rẻ | BookStoreOnline</title>
+    <meta name="description" content="Mua sách online với giá ưu đãi tại BookStoreOnline. Sách mới nhất, đa thể loại, giao hàng nhanh chóng. Khám phá ngay!">
+    <title>@ViewBag.Title | Nhà Sách Online</title>
+    <meta name="description" content="Nhà sách trực tuyến cung cấp hàng nghìn đầu sách chất lượng với giá tốt nhất." />
+    <meta name="keywords" content="sách, mua sách online, nhà sách, truyện tranh, sách giáo khoa, sách văn học" />
+    <meta name="author" content="Nhà Sách Online" />
+    <meta name="robots" content="index, follow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Open Graph để hiển thị đẹp trên Facebook -->
+    <meta property="og:title" content="Nhà Sách Online - Mua Sách Giá Tốt" />
+    <meta property="og:description" content="Nhà sách trực tuyến với hàng nghìn đầu sách phong phú, đa dạng thể loại." />
+    <meta property="og:image" content="https://ttmhoang8th4-001-site1.ntempurl.com/" />
+    <meta property="og:url" content="https://ttmhoang8th4-001-site1.ntempurl.com/" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:title" content="Nhà Sách Online - Mua Sách Giá Tốt" />
+    <meta name="twitter:description" content="Nhà sách trực tuyến với hàng nghìn đầu sách phong phú, đa dạng thể loại." />
+    <meta name="twitter:image" content="https://ttmhoang8th4-001-site1.ntempurl.com/" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="~/Images/z5482551824090_8d0041d8091c42fc59c7cfff0e837099.jpg">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -35,12 +60,11 @@
 
         .cart-link {
             margin-left: 133px;
-            margin-bottom:10px;
+            margin-bottom: 10px;
         }
 
             .cart-link i {
                 color: #c92127;
-               
             }
 
         .navbar-nav a {
@@ -128,7 +152,7 @@
                     {
                         <div class="dropdown show">
                             <a class="user-link-option" href="" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i style="margin: 20px; color: #c92127;"  class="bi bi-person-circle"></i>
+                                <i style="margin: 20px; color: #c92127;" class="bi bi-person-circle"></i>
                                 <p style="font-size: 22px; color: #c92127; width: 100px; "> @user.Ten</p>
 
                             </a>
@@ -279,5 +303,17 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXXXX-X"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-116NSQV8Q5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-116NSQV8Q5');
+    </script>
+    <script>
+        (function () { if (!window.chatbase || window.chatbase("getState") !== "initialized") { window.chatbase = (...arguments) => { if (!window.chatbase.q) { window.chatbase.q = [] } window.chatbase.q.push(arguments) }; window.chatbase = new Proxy(window.chatbase, { get(target, prop) { if (prop === "q") { return target.q } return (...args) => target(prop, ...args) } }) } const onLoad = function () { const script = document.createElement("script"); script.src = "https://www.chatbase.co/embed.min.js"; script.id = "_Px6ZiNVNfm05e89KFes0"; script.domain = "www.chatbase.co"; document.body.appendChild(script) }; if (document.readyState === "complete") { onLoad() } else { window.addEventListener("load", onLoad) } })();
+    </script>
 </body>
 </html>
