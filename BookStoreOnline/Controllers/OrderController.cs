@@ -40,5 +40,18 @@ namespace BookStoreOnline.Controllers
 
             return RedirectToAction("Index");
         }
+        public ActionResult Details(int id)
+        {
+            var order = db.DONHANGs
+                .Include(o => o.CHITIETDONHANGs.Select(d => d.SANPHAM)) // Nạp thông tin sản phẩm
+                .FirstOrDefault(o => o.MaDonHang == id);
+
+            if (order == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(order);
+        }
     }
 }

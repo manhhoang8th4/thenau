@@ -243,8 +243,10 @@
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\CategoryPartialController.cs" />
+    <Compile Include="Controllers\GioiThieuController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HttpRequestHelper.cs" />
+    <Compile Include="Controllers\LienHeController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\ProductDetailController.cs" />
     <Compile Include="Controllers\ReviewsController.cs" />
@@ -502,6 +504,9 @@
     <Content Include="Views\User\ForgotPassword.cshtml" />
     <Content Include="Views\User\ResetPassword.cshtml" />
     <Content Include="Views\Category\GetBooks.cshtml" />
+    <Content Include="Views\LienHe\Index.cshtml" />
+    <Content Include="Views\GioiThieu\Index.cshtml" />
+    <Content Include="Views\Order\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
