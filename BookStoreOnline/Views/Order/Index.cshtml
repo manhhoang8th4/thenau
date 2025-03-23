@@ -74,9 +74,12 @@
                                 break;
                         }
                     </td>
-                    <td>
+                    <td class="d-flex p-2 w-100">
                         @if (item.TrangThai == (int)Constants.StatusOrder.NoInform)
                         {
+                            <button type="button" class="btn-danger" action="@Url.Action("Details", "Order") data-toggle="modal" data-target="#cancelOrderModal" data-orderid="@item.MaDonHang">
+                                Chỉnh sửa
+                            </button>
                             <button type="button" class="btn-danger" data-toggle="modal" data-target="#cancelOrderModal" data-orderid="@item.MaDonHang">
                                 Hủy
                             </button>
@@ -246,7 +249,8 @@
         }
 
     .btn-danger {
-        width: 70%;
+        width: 120px;
+        height:30px;
         border: 1px solid #ccc;
         border-radius: 5px;
         font-weight: 400;

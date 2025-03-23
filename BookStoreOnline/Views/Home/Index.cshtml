@@ -197,6 +197,10 @@
 
     }
 
+    .card-title h5{
+        color:#000;
+    }
+
     .rating-stars {
         display: flex;
     }
@@ -253,6 +257,12 @@
         transition: all 0.5s;
     }
 
+
+    .buy-button:hover{
+        color:#fff;
+        text-decoration:underline;
+    }
+
     .card:has(.out-of-stock) .buy-button {
         opacity: 0.5; /* Làm mờ nút Mua khi hết hàng */
         pointer-events: none; /* Không cho phép click khi hết hàng */
@@ -290,7 +300,7 @@
                     </a>
                     <div style="height:250px" class="card-body">
                         <a href="@Url.Action("Index", "ProductDetail", new { id = item.MaSanPham })" class="title-prod">
-                            <h5 class="card-title">
+                            <h5 style="color:#000" class="card-title">
                                 @Html.Raw(GetShortTitle(item.TenSanPham))
                             </h5>
                         </a>
