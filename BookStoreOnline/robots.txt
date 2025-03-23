@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://ttmhoang8th4-001-site1.ntempurl.com/sitemap.xml

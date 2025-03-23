@@ -144,6 +144,7 @@ public class UserController : Controller
                 // Lưu access token vào cookie
                 SetAccessTokenCookie(accessToken);
 
+               
                 return RedirectToAction("Index", "Home");
             }
             else
