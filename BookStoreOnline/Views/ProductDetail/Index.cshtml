@@ -22,7 +22,6 @@
             @if (user == null)
             {
                 <div class="form-add-to-cart">
-                    <input type="number" style="width:60px" value="1" min="1" readonly>
                     <button style="opacity: 0.5;" disabled><i class="bi bi-bag-plus"></i> Thêm vào giỏ hàng</button>
                 </div>
             }
@@ -34,7 +33,7 @@
                     {
                         <input type="number" name="Quantity" style="width:60px" value="1" min="1">
                         <input type="hidden" name="ProductID" value="@Model.MaSanPham" />
-                        <button style="background-color: #c92127; color: white; border-radius:5px" type="submit"><i class="bi bi-bag-plus"></i> Thêm vào giỏ hàng</button>
+                        <button style="background-color: #c92127; color: white; border-radius:5px; opacity:1" type="submit"><i class="bi bi-bag-plus"></i> Thêm vào giỏ hàng</button>
                     }
                 }
                 else
@@ -215,6 +214,11 @@
             border-radius: 8px;
             cursor: pointer;
             transition: all 0.5s;
+        }
+        .form-add-to-cart button {
+            opacity: 0.5;
+            border-radius: 5px;
+            border: 1px solid #000;
         }
     </style>
 
