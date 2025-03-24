@@ -626,14 +626,29 @@ namespace BookStoreOnline.Controllers
             }
             return Redirect(paymentUrl);
         }
-       public ActionResult callback(int id)
-       {
-            var checkid = db.DONHANGs.Where(s=> s.MaDonHang == id).FirstOrDefault();
-            if(checkid == null)
+        private KHACHHANG GetAuthenticatedUser()
+        {
+            var cookie = Request.Cookies["AccessToken"];
+            if (cookie == null)
             {
-                return HttpNotFound();
+                return null;
             }
-            return RedirectToAction("Index","Order");
-       }
+
+            string accessToken = cookie.Value;
+            return db.KHACHHANGs.FirstOrDefault(k => k.AccessToken == accessToken);
+        }
+
+        // GET: Order
+        public ActionResult callback()
+        {
+            var user = GetAuthenticatedUser();
+            if (user == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+
+            var orders = db.DONHANGs.Where(o => o.ID == user.MaKH).ToList();
+            return View(orders);
+        }
     }
 }
