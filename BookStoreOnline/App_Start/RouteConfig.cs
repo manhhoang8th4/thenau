@@ -18,6 +18,11 @@ namespace BookStoreOnline
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+            routes.MapRoute(
+            name: "Sitemap",
+            url: "sitemap.xml",
+            defaults: new { controller = "Sitemap", action = "Index" }
+);
         }
     }
 }

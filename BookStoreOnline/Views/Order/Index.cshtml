@@ -73,6 +73,12 @@
                                 <span>Đã Thanh Toán</span>;
                                 break;
                         }
+                        @switch (item.TrangThaiThanhToan)
+                        {
+                            case (int)Constants.StatusPayment.Refund:
+                                <span>Đã Hoàn Tiền</span>;
+                                break;
+                        }
                     </td>
                     <td class="d-flex p-2 w-100">
                         @if (item.TrangThai == (int)Constants.StatusOrder.NoInform)

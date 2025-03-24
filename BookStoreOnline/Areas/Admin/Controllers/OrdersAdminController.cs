@@ -178,7 +178,15 @@ namespace BookStoreOnline.Areas.Admin.Controllers
             var order = db.DONHANGs.FirstOrDefault(item => item.MaDonHang == id);
             if (order != null)
             {
+                // Cập nhật trạng thái đơn hàng thành "Đã giao hàng"
                 order.TrangThai = (int)StatusOrder.Received;
+
+                // Nếu đơn hàng là COD, cập nhật trạng thái thanh toán thành "Đã thanh toán"
+                if (order.PhuongThucThanhToan == (int)TypePayment.COD)
+                {
+                    order.TrangThaiThanhToan = (int)StatusPayment.Paid; // 1 là "Đã thanh toán"
+                }
+
                 db.SaveChanges();
             }
             return RedirectToAction("Index");

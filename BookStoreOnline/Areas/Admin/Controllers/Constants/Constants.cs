@@ -35,7 +35,10 @@ namespace BookStoreOnline.Areas.Admin.Constants
             [Description("Chưa thanh toán")]
             Unpaid = 0,
             [Description("Đã thanh toán")]
-            Paid = 1
+            Paid = 1,
+            [Description("Đã hoàn tiền")]
+            Refund = 2
+
         }
         public enum TypePayment
         {
