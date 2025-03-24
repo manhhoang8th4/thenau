@@ -148,9 +148,9 @@ namespace BookStoreOnline.Areas.Admin.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             // Tìm khách hàng cần xóa
-            KHACHHANG khachHang = db.KHACHHANGs.Find(id);
+            NHANVIEN nhanVien = db.NHANVIENs.Find(id);
 
-            if (khachHang != null)
+            if (nhanVien != null)
             {
                 // Xóa các bản ghi liên quan trong DONHANG
                 var donHangList = db.DONHANGs.Where(dh => dh.ID == id).ToList();
@@ -166,7 +166,7 @@ namespace BookStoreOnline.Areas.Admin.Controllers
                 }
 
                 // Xóa khách hàng
-                db.KHACHHANGs.Remove(khachHang);
+                db.NHANVIENs.Remove(nhanVien);
                 db.SaveChanges();
             }
 
