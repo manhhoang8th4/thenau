@@ -59,8 +59,8 @@
                 <h5 style="color:#000;" class="payment-method-title">Phương thức thanh toán</h5>
                 <select id="paymentMethod1" name="paymentMethod1" class="form-control">
                     <option value="">Chọn phương thức thanh toán </option>
-                    <option value="cod">Thanh toán bằng momo</option>
-                    <option value="paypal">Chuyển khoản ngân hàng</option>
+                    <option value="cod">Thanh toán bằng MoMo</option>
+                    <option value="paypal">Thanh toán bằng PayPal</option>
                     <option value="momo">Thanh toán khi nhận hàng (COD)</option>
                 </select>
             </div>
@@ -92,10 +92,10 @@
                         <button id="codButton" class="custom-btn">Thanh toán bằng MoMo</button>
                     </div>
                     <div id="paypalButton">
-                        <a href="/cart/PaymentWithPayPal" id="paypalLink" class="custom-btn">Thanh toán bằng PayPal</a>
+                        <button type="submit" name="paymentMethod1" value="paypal" class="custom-btn">Thanh toán bằng PayPal</button>
                     </div>
                     <div id="momoButton">
-                        <a href="/cart/SuccessView" id="momoLink" class="custom-btn">Đặt Hàng</a>
+                        <button type="submit" name="paymentMethod1" value="momo" class="custom-btn">Thanh toán khi nhận hàng</button>
                     </div>
                 </div>
             </div>

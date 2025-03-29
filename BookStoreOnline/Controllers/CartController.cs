@@ -321,102 +321,23 @@ namespace BookStoreOnline.Controllers
 
                     transaction.Commit();
 
-                    return RedirectToAction("momo", "Cart", new { id = order.MaDonHang });
-                }
-                catch (Exception ex)
-                {
-                    transaction.Rollback();
-                    return new HttpStatusCodeResult(HttpStatusCode.InternalServerError, "Order processing error.");
-                }
-            }
-        }
-
-        [HttpPost]
-        public ActionResult InsertOrder1(string address, string paymentMethod1)
-        {
-            var cartItems = GetCart();
-            if (cartItems == null || !cartItems.Any())
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Empty cart.");
-            }
-
-            var customer = Session["TaiKhoan"] as KHACHHANG;
-            if (customer == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.Unauthorized, "Not logged in.");
-            }
-
-            var discountAmount = Session["DiscountAmount"] as decimal? ?? 0;
-            var finalPrice = Session["FinalPrice"] as decimal? ?? GetTotalPrice();
-            var roundedFinalPrice = (int)Math.Round(finalPrice);
-
-            // Xử lý phương thức thanh toán
-            int trangThaiThanhToan = 0;  // Mặc định là chưa thanh toán (COD)
-            int phuongThucThanhToan = 0; // Mặc định là COD
-            if (paymentMethod1 == "paypal")
-            {
-                phuongThucThanhToan = 2;  // Ngân hàng
-                trangThaiThanhToan = 1;   // Đã thanh toán
-            }
-            else if (paymentMethod1 == "cod") //tienmat
-            {
-                phuongThucThanhToan = 1;
-                trangThaiThanhToan = 1;
-            }
-
-            using (var transaction = db.Database.BeginTransaction())
-            {
-                try
-                {
-                    var order = new DONHANG
+                    if (paymentMethod1 == "cod")
                     {
-                        ID = customer.MaKH,
-                        NgayDat = DateTime.Now,
-                        DiaChi = address,
-                        TrangThai = 0, // Not confirmed
-                        TrangThaiThanhToan = trangThaiThanhToan, // Cập nhật trạng thái thanh toán
-                        PhuongThucThanhToan = phuongThucThanhToan,  // Lưu phương thức thanh toán
-                        TongTien = roundedFinalPrice
-                    };
-
-                    db.DONHANGs.Add(order);
-                    db.SaveChanges();
-
-                    foreach (var item in cartItems)
-                    {
-                        var product = db.SANPHAMs.Find(item.ProductID);
-                        if (product == null)
-                        {
-                            return HttpNotFound("Product not found.");
-                        }
-
-                        if (item.Number > product.SoLuong)
-                        {
-                            return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Quá số lượng tồn trong kho.");
-                        }
-
-                        var orderDetail = new CHITIETDONHANG
-                        {
-                            MaDonHang = order.MaDonHang,
-                            MaSanPham = item.ProductID,
-                            SoLuong = item.Number
-                        };
-                        db.CHITIETDONHANGs.Add(orderDetail);
-
-                        product.SoLuong -= item.Number;
-                        product.SoLuongBan += item.Number;
-                        db.Entry(product).State = EntityState.Modified;
+                        return RedirectToAction("momo", "Cart", new { id = order.MaDonHang });
                     }
-
-                    db.SaveChanges();
-                    // Do not clear cart until PayPal payment is confirmed
-                    Session["GioHang"] = null;
-                    Session["DiscountAmount"] = null;
-                    Session["FinalPrice"] = null;
-
-                    transaction.Commit();
-
-                    return RedirectToAction("momo", "Cart", new { id = order.MaDonHang });
+                    else if (paymentMethod1 == "momo")
+                    {
+                        return RedirectToAction("Index", "Order", new { id = customer.MaKH });
+                    }
+                    else if (paymentMethod1 == "paypal")
+                    {
+                        return RedirectToAction("PaymentWithPaypal", "Cart", new { id = order.MaDonHang });
+                    }
+                    else
+                    {
+                        // Trường hợp mặc định nếu paymentMethod1 không phải "cod" hay "momo"
+                        return RedirectToAction("PaymentWithPaypal", "Cart", new { id = customer.MaKH });
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -425,6 +346,7 @@ namespace BookStoreOnline.Controllers
                 }
             }
         }
+
 
         [HttpPost]
         public JsonResult ApplyDiscount(string discountCode)
@@ -465,11 +387,9 @@ namespace BookStoreOnline.Controllers
 
         public ActionResult PaymentWithPaypal(string Cancel = null)
         {
-            //getting the apiContext  
             APIContext apiContext = PaypalConfiguration.GetAPIContext();
             try
             {
-
                 string payerId = Request.Params["PayerID"];
                 if (string.IsNullOrEmpty(payerId))
                 {
@@ -489,16 +409,13 @@ namespace BookStoreOnline.Controllers
                             paypalRedirectUrl = lnk.href;
                         }
                     }
-                    // saving the paymentID in the key guid  
                     Session.Add(guid, createdPayment.id);
                     return Redirect(paypalRedirectUrl);
                 }
                 else
                 {
-                    // This function exectues after receving all parameters for the payment  
                     var guid = Request.Params["guid"];
                     var executedPayment = ExecutePayment(apiContext, payerId, Session[guid] as string);
-                    //If executed payment failed then we will show payment failure message to user  
                     if (executedPayment.state.ToLower() != "approved")
                     {
                         return View("FailureView");

@@ -34,9 +34,20 @@ namespace BookStoreOnline.Controllers
             }
 
             var orders = db.DONHANGs.Where(o => o.ID == user.MaKH).ToList();
+
+            foreach (var order in orders)
+            {
+                if (order.TrangThai == (int)Constants.StatusOrder.Received && order.TrangThaiThanhToan != (int)Constants.StatusPayment.Paid)
+                {
+                    order.TrangThaiThanhToan = (int)Constants.StatusPayment.Paid;
+                    db.Entry(order).State = EntityState.Modified;
+                }
+            }
+
+            db.SaveChanges(); // Lưu cập nhật vào database
+
             return View(orders);
         }
-
         [HttpPost]  
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, string reason)

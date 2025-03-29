@@ -24,6 +24,7 @@
             <th>Địa chỉ giao hàng</th>
             <th>Trạng thái đơn hàng</th>
             <th>Trạng thái thanh toán</th>
+            <th>Thao tác</th>
         </tr>
     </thead>
     <tbody>
@@ -81,15 +82,15 @@
                         }
                     </td>
                     <td class="d-flex p-2 w-100">
-                        @if (item.TrangThai == (int)Constants.StatusOrder.NoInform)
-                        {
-                            <button type="button" class="btn-danger"  data-toggle="modal" data-target="#cancelOrderModal" data-orderid="@item.MaDonHang">
-                                Chỉnh sửa
-                            </button>
-                            <button type="button" class="btn-danger" data-toggle="modal" data-target="#cancelOrderModal" data-orderid="@item.MaDonHang">
+                       
+                        
+                           <a href="@Url.Action("Details", "Order", new { id = item.MaDonHang })" class="btn btn-danger", style="margin-left:auto">
+                               Chi tiết
+                           </a>
+                        @*    <button type="button" class="btn-danger" data-toggle="modal" data-target="#cancelOrderModal" data-orderid="@item.MaDonHang">
                                 Hủy
-                            </button>
-                        }
+                            </button>*@
+                        
                     </td>
 
                 </tr>
